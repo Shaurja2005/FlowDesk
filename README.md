@@ -47,31 +47,33 @@
 
 ## ⚙️ Installation & Setup
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/yourusername/flowdesk.git
-cd flowdesk
-```
+### 1. Prerequisites to Install
+| Tool | Download |
+|------|---------|
+| **Node.js v18+** | https://nodejs.org |
+| **MongoDB Community** | https://www.mongodb.com/try/download/community |
 
-### 2. Backend Setup
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env with your values (see Environment Variables below)
+Make sure MongoDB is running locally (default port 27017).
+
+### 2. Start the Backend
+```powershell
+cd e:\projects\FlowDesk\backend
+# .env is already created — no changes needed for local dev
 npm run dev
 ```
+✅ You should see: `🚀 FlowDesk API running on http://localhost:5000 [development]`
 
-### 3. Frontend Setup
-```bash
-cd frontend
-npm install
+### 3. Start the Frontend
+```powershell
+cd e:\projects\FlowDesk\frontend
 npm run dev
 ```
+✅ Open: **http://localhost:5173**
 
-The app will be available at:
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5000/api
+### 4. Create Your First Account
+1. Go to http://localhost:5173/register
+2. Register with **role: Admin** to get full access
+3. You can create more accounts with Manager/Developer roles to test RBAC
 
 ## 🔑 Environment Variables
 
