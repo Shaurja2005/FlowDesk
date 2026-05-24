@@ -54,7 +54,7 @@ const TaskListView = ({ projectId, refreshKey, canManage }) => {
     <div>
       <div className="mb-4">
         <div className="relative">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-content" />
           <input type="text" placeholder="Search tasks..." value={search} onChange={(e) => setSearch(e.target.value)} className="input pl-9" />
         </div>
       </div>
@@ -66,12 +66,12 @@ const TaskListView = ({ projectId, refreshKey, canManage }) => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="text-left px-4 py-3 text-gray-400 font-medium">Title</th>
-                <th className="text-left px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Status</th>
-                <th className="text-left px-4 py-3 text-gray-400 font-medium hidden lg:table-cell">Priority</th>
-                <th className="text-left px-4 py-3 text-gray-400 font-medium hidden lg:table-cell">Assignee</th>
-                <th className="text-left px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Due Date</th>
-                <th className="text-right px-4 py-3 text-gray-400 font-medium">Actions</th>
+                <th className="text-left px-4 py-3 text-secondary-content font-medium">Title</th>
+                <th className="text-left px-4 py-3 text-secondary-content font-medium hidden md:table-cell">Status</th>
+                <th className="text-left px-4 py-3 text-secondary-content font-medium hidden lg:table-cell">Priority</th>
+                <th className="text-left px-4 py-3 text-secondary-content font-medium hidden lg:table-cell">Assignee</th>
+                <th className="text-left px-4 py-3 text-secondary-content font-medium hidden md:table-cell">Due Date</th>
+                <th className="text-right px-4 py-3 text-secondary-content font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -88,11 +88,11 @@ const TaskListView = ({ projectId, refreshKey, canManage }) => {
                     {task.assignedTo ? (
                       <div className="flex items-center gap-2">
                         <Avatar user={task.assignedTo} size="xs" />
-                        <span className="text-gray-400 text-xs">{task.assignedTo.name}</span>
+                        <span className="text-secondary-content text-xs">{task.assignedTo.name}</span>
                       </div>
                     ) : <span className="text-gray-600">Unassigned</span>}
                   </td>
-                  <td className={`px-4 py-3 hidden md:table-cell text-xs ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-gray-500'}`}>
+                  <td className={`px-4 py-3 hidden md:table-cell text-xs ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-muted-content'}`}>
                     {formatDate(task.dueDate)}
                   </td>
                   <td className="px-4 py-3 text-right">

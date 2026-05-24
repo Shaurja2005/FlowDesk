@@ -11,8 +11,11 @@ const axiosInstance = axios.create({
 // ─── Request interceptor — attach access token ────────────────────────────────
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    // Only attach token to our own API to prevent cross-domain leaks
+    if (config.url?.startsWith(BASE_URL) || config.url?.startsWith('/')) {
+      const token = localStorage.getItem('accessToken');
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)

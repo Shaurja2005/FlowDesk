@@ -34,6 +34,14 @@ const protect = asyncHandler(async (req, res, next) => {
       });
     }
 
+    if (req.user.isSuspended) {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account has been suspended. Contact your administrator.',
+        code: 'ACCOUNT_SUSPENDED'
+      });
+    }
+
     next();
   } catch (err) {
     return res.status(401).json({

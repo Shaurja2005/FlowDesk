@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Folder, FileText, ChevronRight, Copy, ExternalLink, X, FileQuestion, Book, AlertTriangle, Code as CodeIcon } from 'lucide-react';
-import { getFileTree, getFileContent, getReadme } from '../api/codeApi';
-import { githubApi } from '../api/githubApi';
-import ConnectRepoEmptyState from './DevTab/ConnectRepoEmptyState';
-import { Spinner } from './Spinner';
+import { getFileTree, getFileContent, getReadme } from '../../api/codeApi';
+import { githubApi } from '../../api/githubApi';
+import ConnectRepoEmptyState from '../DevTab/ConnectRepoEmptyState';
+import { Spinner } from '../Spinner';
 import toast from 'react-hot-toast';
 
-const CodeSection = ({ projectId, linkedRepo }) => {
+const FilesTab = ({ projectId, linkedRepo }) => {
   const [currentPath, setCurrentPath] = useState('');
   const [currentBranch, setCurrentBranch] = useState('');
   const [branches, setBranches] = useState([]);
@@ -145,14 +145,14 @@ const CodeSection = ({ projectId, linkedRepo }) => {
   if (error) return <div className="p-8 text-center text-red-400 glass-card">{error}</div>;
 
   return (
-    <div className="flex h-[700px] gap-4 bg-dark-900 border border-theme rounded-xl overflow-hidden shadow-card">
+    <div className="flex h-[700px] gap-4 bg-base border border-theme rounded-xl overflow-hidden shadow-card">
       {/* LEFT COLUMN: File Tree */}
-      <div className="w-[280px] sm:w-[320px] flex flex-col bg-dark-800 border-r border-theme flex-shrink-0">
-        <div className="p-4 border-b border-theme bg-dark-900/50">
+      <div className="w-[280px] sm:w-[320px] flex flex-col bg-surface border-r border-theme flex-shrink-0">
+        <div className="p-4 border-b border-theme bg-base/50">
           <select 
             value={currentBranch} 
             onChange={handleBranchChange}
-            className="w-full bg-dark-700 border border-theme rounded-lg px-3 py-1.5 text-sm font-medium focus:ring-1 focus:ring-primary-500 cursor-pointer"
+            className="w-full bg-elevated border border-theme rounded-lg px-3 py-1.5 text-sm font-medium focus:ring-1 focus:ring-primary-500 cursor-pointer"
           >
             {branches.map(b => (
               <option key={b.name} value={b.name}>
@@ -163,7 +163,7 @@ const CodeSection = ({ projectId, linkedRepo }) => {
         </div>
 
         {/* Breadcrumbs */}
-        <div className="px-4 py-3 border-b border-theme bg-dark-800/80 overflow-x-auto whitespace-nowrap scrollbar-hide text-sm flex items-center gap-1">
+        <div className="px-4 py-3 border-b border-theme bg-surface/80 overflow-x-auto whitespace-nowrap scrollbar-hide text-sm flex items-center gap-1">
           <button 
             onClick={() => navigateToPath('')} 
             className="text-primary-400 hover:text-primary-300 font-semibold"
@@ -235,7 +235,7 @@ const CodeSection = ({ projectId, linkedRepo }) => {
       </div>
 
       {/* RIGHT COLUMN: File Viewer */}
-      <div className="flex-1 flex flex-col min-w-0 bg-dark-900">
+      <div className="flex-1 flex flex-col min-w-0 bg-base">
         {loadingFile ? (
           <div className="flex-1 flex items-center justify-center">
             <Spinner size="lg" />
@@ -249,14 +249,14 @@ const CodeSection = ({ projectId, linkedRepo }) => {
         ) : (
           <>
             {/* Viewer Header */}
-            <div className="flex items-center justify-between p-3 border-b border-theme bg-dark-800/50">
+            <div className="flex items-center justify-between p-3 border-b border-theme bg-surface/50">
               <div className="flex items-center gap-3 min-w-0">
                 <span className="font-mono text-sm text-secondary-content truncate">
                   {openFile.isReadme && <Book size={14} className="inline mr-2 text-primary-400" />}
                   {openFile.path}
                 </span>
                 {openFile.size && (
-                  <span className="badge bg-dark-700 text-muted-content border border-theme">
+                  <span className="badge bg-elevated text-muted-content border border-theme">
                     {formatSize(openFile.size)}
                   </span>
                 )}
@@ -291,7 +291,7 @@ const CodeSection = ({ projectId, linkedRepo }) => {
             </div>
 
             {/* Viewer Content */}
-            <div className="flex-1 overflow-auto bg-dark-900 relative">
+            <div className="flex-1 overflow-auto bg-base relative">
               {openFile.isTooLarge ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
                   <AlertTriangle size={48} className="text-orange-400 mb-4 opacity-80" />
@@ -339,4 +339,4 @@ const CodeSection = ({ projectId, linkedRepo }) => {
   );
 };
 
-export default CodeSection;
+export default FilesTab;

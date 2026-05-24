@@ -47,7 +47,7 @@ const ProjectDevTab = ({ project, onUnlink }) => {
       {/* Repo Header */}
       <div className="glass-card p-5 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-[#24292e] rounded-full flex items-center justify-center text-white">
+          <div className="w-10 h-10 bg-[#24292e] rounded-full flex items-center justify-center text-primary-content">
             <GithubIcon size={20} />
           </div>
           <div>
@@ -93,7 +93,7 @@ const ProjectDevTab = ({ project, onUnlink }) => {
             {/* COMMITS */}
             {activeTab === 'commits' && (
               data.commits.length > 0 ? data.commits.map(commit => (
-                <div key={commit.sha} className="p-4 hover:bg-dark-700/30 transition-colors flex justify-between items-start">
+                <div key={commit.sha} className="p-4 hover:bg-elevated/30 transition-colors flex justify-between items-start">
                   <div>
                     <a href={commit.htmlUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-primary-content hover:text-primary-400 mb-1 block">
                       {commit.message}
@@ -121,7 +121,7 @@ const ProjectDevTab = ({ project, onUnlink }) => {
               <>
                 {[...data.pulls.open, ...data.pulls.closed].length > 0 ? (
                   [...data.pulls.open, ...data.pulls.closed].map(pr => (
-                    <div key={pr.number} className="p-4 hover:bg-dark-700/30 transition-colors flex justify-between items-start">
+                    <div key={pr.number} className="p-4 hover:bg-elevated/30 transition-colors flex justify-between items-start">
                       <div>
                         <a href={pr.htmlUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-primary-content hover:text-primary-400 mb-1 flex items-center gap-2">
                           #{pr.number} {pr.title}
@@ -137,9 +137,9 @@ const ProjectDevTab = ({ project, onUnlink }) => {
                           <img src={pr.author.avatarUrl} alt={pr.author.login} className="w-4 h-4 rounded-full" />
                           <span>{pr.author.login}</span>
                           <span>•</span>
-                          <span className="font-mono bg-dark-700 px-1 rounded">{pr.headBranch}</span>
+                          <span className="font-mono bg-elevated px-1 rounded">{pr.headBranch}</span>
                           <span>→</span>
-                          <span className="font-mono bg-dark-700 px-1 rounded">{pr.baseBranch}</span>
+                          <span className="font-mono bg-elevated px-1 rounded">{pr.baseBranch}</span>
                         </div>
                       </div>
                       <span className="text-xs text-muted-content">
@@ -154,7 +154,7 @@ const ProjectDevTab = ({ project, onUnlink }) => {
             {/* BRANCHES */}
             {activeTab === 'branches' && (
               data.branches.length > 0 ? data.branches.map(branch => (
-                <div key={branch.name} className="p-4 hover:bg-dark-700/30 transition-colors flex justify-between items-center">
+                <div key={branch.name} className="p-4 hover:bg-elevated/30 transition-colors flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <GitBranch size={16} className="text-muted-content" />
                     <span className="font-medium font-mono text-primary-content">{branch.name}</span>

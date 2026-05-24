@@ -8,6 +8,7 @@ const { sendEmail, taskAssignedEmail } = require('../utils/sendEmail');
 const { successResponse, errorResponse } = require('../utils/response');
 const { ACTIVITY_ACTIONS, NOTIFICATION_TYPES, ROLES } = require('../config/constants');
 const User = require('../models/User');
+const { streamUpload } = require('../utils/cloudinaryHelper');
 
 // Helper — check project membership
 const checkProjectAccess = async (projectId, userId, userRole) => {
@@ -332,12 +333,14 @@ const uploadTaskAttachment = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id);
   if (!task) return errorResponse(res, 'Task not found', 404);
 
+  const result = await streamUpload(req);
+
   const attachment = {
-    filename: req.file.filename,
+    filename: result.public_id,
     originalName: req.file.originalname,
     mimetype: req.file.mimetype,
     size: req.file.size,
-    url: `/uploads/${req.file.filename}`,
+    url: result.secure_url,
     uploadedBy: req.user._id,
     uploadedAt: Date.now(),
   };

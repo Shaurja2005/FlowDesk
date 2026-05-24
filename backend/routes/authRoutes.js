@@ -3,7 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const {
-  register, login, logout, refreshAccessToken,
+  register, login, googleLogin, logout, refreshAccessToken,
   getMe, updateAccount, updateProfile,
   verifyEmail, resendVerification,
 } = require('../controllers/authController');
@@ -78,6 +78,9 @@ router.post(
   validate,
   login
 );
+
+// POST /api/auth/google
+router.post('/google', authLimiter, googleLogin);
 
 // POST /api/auth/logout
 router.post('/logout', logout);

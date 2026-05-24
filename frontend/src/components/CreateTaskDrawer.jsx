@@ -213,9 +213,9 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 z-40 animate-fade-in" onClick={onClose} />
-      <div className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-dark-800 border-l border-theme shadow-2xl z-50 flex flex-col animate-slide-left">
+      <div className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-surface border-l border-theme shadow-2xl z-50 flex flex-col animate-slide-left">
         
-        <div className="flex items-center justify-between p-5 border-b border-theme bg-dark-900/50">
+        <div className="flex items-center justify-between p-5 border-b border-theme bg-base/50">
           <h2 className="text-xl font-bold text-primary-content">Create issue</h2>
           <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-muted-content hover:text-primary-content transition-colors">
             <X size={20} />
@@ -228,7 +228,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
             {/* 1. Space */}
             <div>
               <label className="label">Space <span className="text-red-500">*</span></label>
-              <div className="flex items-center gap-2 p-2.5 bg-dark-700/50 border border-theme rounded-lg text-secondary-content text-sm select-none">
+              <div className="flex items-center gap-2 p-2.5 bg-elevated/50 border border-theme rounded-lg text-secondary-content text-sm select-none">
                 <div className="w-5 h-5 rounded bg-primary-500/20 text-primary-400 flex items-center justify-center text-xs font-bold">
                   {projectKey[0]}
                 </div>
@@ -244,7 +244,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
                 name="workType"
                 control={control}
                 render={({ field }) => (
-                  <div className="flex bg-dark-700/50 p-1 rounded-lg border border-theme w-fit">
+                  <div className="flex bg-elevated/50 p-1 rounded-lg border border-theme w-fit">
                     {WORK_TYPES.map(type => {
                       const isActive = field.value === type.id;
                       return (
@@ -364,7 +364,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
                     }}
                   />
                   {parentResults.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-dark-700 border border-theme rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                    <div className="absolute z-10 w-full mt-1 bg-elevated border border-theme rounded-lg shadow-xl max-h-48 overflow-y-auto">
                       {parentResults.map(task => (
                         <button
                           key={task._id}
@@ -452,7 +452,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
               {attachments.length > 0 && (
                 <div className="mt-3 space-y-2">
                   {attachments.map((file, i) => (
-                    <div key={i} className="flex items-center justify-between p-2.5 bg-dark-700/50 border border-theme rounded-lg">
+                    <div key={i} className="flex items-center justify-between p-2.5 bg-elevated/50 border border-theme rounded-lg">
                       <div className="flex items-center gap-3 overflow-hidden">
                         <File size={16} className="text-primary-400 flex-shrink-0" />
                         <span className="text-sm text-secondary-content truncate">{file.name}</span>
@@ -468,7 +468,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
 
             {/* 15. Linked work items */}
-            <div className="p-4 rounded-xl border border-theme bg-dark-800/50 space-y-4">
+            <div className="p-4 rounded-xl border border-theme bg-surface/50 space-y-4">
               <label className="label">Linked work items</label>
               <div className="flex gap-3">
                 <select 
@@ -491,7 +491,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
                     onChange={(e) => setLinkedSearch(e.target.value)}
                   />
                   {linkedResults.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-dark-700 border border-theme rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                    <div className="absolute z-10 w-full mt-1 bg-elevated border border-theme rounded-lg shadow-xl max-h-48 overflow-y-auto">
                       {linkedResults.map(task => (
                         <button
                           key={task._id}
@@ -511,7 +511,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
               {linkedItemsList.length > 0 && (
                 <div className="space-y-2 mt-2">
                   {linkedItemsList.map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm p-2 bg-dark-700/30 rounded border border-theme/50">
+                    <div key={i} className="flex items-center gap-3 text-sm p-2 bg-elevated/30 rounded border border-theme/50">
                       <span className="text-muted-content italic whitespace-nowrap">{item.type}</span>
                       <span className="font-medium text-primary-400">{projectKey}-{item.task._id.slice(-4)}</span>
                       <span className="text-secondary-content truncate">{item.task.title}</span>
@@ -547,7 +547,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
             {/* 13. Reporter */}
             <div>
               <label className="label">Reporter <span className="text-red-500">*</span></label>
-              <div className="flex items-center gap-3 p-2.5 bg-dark-700/50 border border-theme rounded-lg">
+              <div className="flex items-center gap-3 p-2.5 bg-elevated/50 border border-theme rounded-lg">
                 <Avatar user={user} size="sm" clickable={false} />
                 <span className="text-sm font-medium text-secondary-content">{user?.name}</span>
               </div>
@@ -557,7 +557,7 @@ const CreateTaskDrawer = ({ isOpen, onClose, project, onSuccess }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-5 border-t border-theme bg-dark-900/50 flex items-center justify-end gap-3">
+        <div className="p-5 border-t border-theme bg-base/50 flex items-center justify-end gap-3">
           <button type="button" onClick={onClose} className="btn-ghost">
             Cancel
           </button>

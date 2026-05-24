@@ -125,7 +125,7 @@ const TaskDetailPage = () => {
                   autoFocus
                 />
               ) : (
-                <h1 className="text-xl font-bold text-white flex-1">{task.title}</h1>
+                <h1 className="text-xl font-bold text-primary-content flex-1">{task.title}</h1>
               )}
               <div className="flex items-center gap-2 flex-shrink-0">
                 {canEdit && (
@@ -169,7 +169,7 @@ const TaskDetailPage = () => {
 
             {/* Description */}
             <div>
-              <p className="text-xs text-gray-500 mb-2">Description</p>
+              <p className="text-xs text-muted-content mb-2">Description</p>
               {isEditing ? (
                 <textarea
                   className="input resize-none w-full"
@@ -179,7 +179,7 @@ const TaskDetailPage = () => {
                   placeholder="Add a description..."
                 />
               ) : (
-                <p className="text-sm text-gray-300 whitespace-pre-wrap">
+                <p className="text-sm text-secondary-content whitespace-pre-wrap">
                   {task.description || <span className="text-gray-600">No description</span>}
                 </p>
               )}
@@ -199,7 +199,7 @@ const TaskDetailPage = () => {
 
           {/* Comments */}
           <div className="glass-card p-5">
-            <h2 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-secondary-content mb-4 flex items-center gap-2">
               <MessageSquare size={15} className="text-primary-400" /> Comments ({task.comments?.length || 0})
             </h2>
 
@@ -212,10 +212,10 @@ const TaskDetailPage = () => {
                   <Avatar user={c.user} size="sm" className="flex-shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-medium text-white">{c.user?.name}</span>
+                      <span className="text-sm font-medium text-primary-content">{c.user?.name}</span>
                       <span className="text-xs text-gray-600">{formatRelative(c.createdAt)}</span>
                     </div>
-                    <p className="text-sm text-gray-300 whitespace-pre-wrap">{c.text}</p>
+                    <p className="text-sm text-secondary-content whitespace-pre-wrap">{c.text}</p>
                   </div>
                 </div>
               ))}
@@ -243,11 +243,11 @@ const TaskDetailPage = () => {
         <div className="space-y-4">
           <div className="glass-card p-4 space-y-4">
             <div>
-              <p className="text-xs text-gray-500 mb-1.5 flex items-center gap-1"><User size={11} /> Assignee</p>
+              <p className="text-xs text-muted-content mb-1.5 flex items-center gap-1"><User size={11} /> Assignee</p>
               {task.assignedTo ? (
                 <div className="flex items-center gap-2">
                   <Avatar user={task.assignedTo} size="sm" />
-                  <span className="text-sm text-gray-300">{task.assignedTo.name}</span>
+                  <span className="text-sm text-secondary-content">{task.assignedTo.name}</span>
                 </div>
               ) : <p className="text-sm text-gray-600">Unassigned</p>}
             </div>
@@ -255,11 +255,11 @@ const TaskDetailPage = () => {
             <div className="divider" />
 
             <div>
-              <p className="text-xs text-gray-500 mb-1.5 flex items-center gap-1"><User size={11} /> Reporter</p>
+              <p className="text-xs text-muted-content mb-1.5 flex items-center gap-1"><User size={11} /> Reporter</p>
               {task.createdBy && (
                 <div className="flex items-center gap-2">
                   <Avatar user={task.createdBy} size="sm" />
-                  <span className="text-sm text-gray-300">{task.createdBy.name}</span>
+                  <span className="text-sm text-secondary-content">{task.createdBy.name}</span>
                 </div>
               )}
             </div>
@@ -267,11 +267,11 @@ const TaskDetailPage = () => {
             <div className="divider" />
 
             <div>
-              <p className="text-xs text-gray-500 mb-1.5 flex items-center gap-1"><Calendar size={11} /> Due Date</p>
+              <p className="text-xs text-muted-content mb-1.5 flex items-center gap-1"><Calendar size={11} /> Due Date</p>
               {isEditing ? (
                 <input type="date" className="input text-sm" value={editForm.dueDate} onChange={(e) => setEditForm((f) => ({ ...f, dueDate: e.target.value }))} />
               ) : (
-                <p className={`text-sm ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-gray-300'}`}>
+                <p className={`text-sm ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-secondary-content'}`}>
                   {formatDate(task.dueDate)}
                 </p>
               )}
@@ -281,10 +281,10 @@ const TaskDetailPage = () => {
 
             {/* Time tracking */}
             <div>
-              <p className="text-xs text-gray-500 mb-2 flex items-center gap-1"><Timer size={11} /> Time Tracking</p>
-              <div className="text-sm text-gray-300 mb-2">
-                <span className="font-medium text-white">{task.loggedHours || 0}h</span> logged
-                {task.estimatedHours > 0 && <> / <span className="text-gray-500">{task.estimatedHours}h est.</span></>}
+              <p className="text-xs text-muted-content mb-2 flex items-center gap-1"><Timer size={11} /> Time Tracking</p>
+              <div className="text-sm text-secondary-content mb-2">
+                <span className="font-medium text-primary-content">{task.loggedHours || 0}h</span> logged
+                {task.estimatedHours > 0 && <> / <span className="text-muted-content">{task.estimatedHours}h est.</span></>}
               </div>
               {task.estimatedHours > 0 && (
                 <div className="h-1.5 bg-dark-400 rounded-full overflow-hidden mb-3">
@@ -313,7 +313,7 @@ const TaskDetailPage = () => {
             <div className="divider" />
 
             <div>
-              <p className="text-xs text-gray-500 mb-1">Project</p>
+              <p className="text-xs text-muted-content mb-1">Project</p>
               {task.project && (
                 <Link to={`/projects/${task.project._id}`} className="text-primary-400 hover:text-primary-300 text-sm">
                   {task.project.title}
@@ -329,8 +329,8 @@ const TaskDetailPage = () => {
             <div className="divider" />
 
             <div>
-              <p className="text-xs text-gray-500 mb-1">Created</p>
-              <p className="text-sm text-gray-400">{formatRelative(task.createdAt)}</p>
+              <p className="text-xs text-muted-content mb-1">Created</p>
+              <p className="text-sm text-secondary-content">{formatRelative(task.createdAt)}</p>
             </div>
           </div>
         </div>

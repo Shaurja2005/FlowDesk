@@ -31,14 +31,14 @@ const MyTasksPage = () => {
       <div className="page-header">
         <div>
           <h1 className="page-title">My Tasks</h1>
-          <p className="text-gray-500 text-sm mt-1">{pagination?.total || 0} tasks assigned to you</p>
+          <p className="text-muted-content text-sm mt-1">{pagination?.total || 0} tasks assigned to you</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="relative flex-1 min-w-48">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-content" />
           <input type="text" placeholder="Search tasks..." value={search} onChange={(e) => setSearch(e.target.value)} className="input pl-9" />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="input w-40">
@@ -69,11 +69,11 @@ const MyTasksPage = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="text-left px-5 py-3 text-gray-400 font-medium">Task</th>
-                <th className="text-left px-5 py-3 text-gray-400 font-medium hidden md:table-cell">Project</th>
-                <th className="text-left px-5 py-3 text-gray-400 font-medium hidden md:table-cell">Status</th>
-                <th className="text-left px-5 py-3 text-gray-400 font-medium hidden lg:table-cell">Priority</th>
-                <th className="text-left px-5 py-3 text-gray-400 font-medium hidden lg:table-cell">Due</th>
+                <th className="text-left px-5 py-3 text-secondary-content font-medium">Task</th>
+                <th className="text-left px-5 py-3 text-secondary-content font-medium hidden md:table-cell">Project</th>
+                <th className="text-left px-5 py-3 text-secondary-content font-medium hidden md:table-cell">Status</th>
+                <th className="text-left px-5 py-3 text-secondary-content font-medium hidden lg:table-cell">Priority</th>
+                <th className="text-left px-5 py-3 text-secondary-content font-medium hidden lg:table-cell">Due</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -85,13 +85,13 @@ const MyTasksPage = () => {
                     </Link>
                   </td>
                   <td className="px-5 py-3 hidden md:table-cell">
-                    <Link to={`/projects/${task.project?._id}`} className="text-gray-500 hover:text-primary-400 text-xs">
+                    <Link to={`/projects/${task.project?._id}`} className="text-muted-content hover:text-primary-400 text-xs">
                       {task.project?.title}
                     </Link>
                   </td>
                   <td className="px-5 py-3 hidden md:table-cell"><StatusBadge status={task.status} /></td>
                   <td className="px-5 py-3 hidden lg:table-cell"><PriorityBadge priority={task.priority} /></td>
-                  <td className={`px-5 py-3 hidden lg:table-cell text-xs ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-gray-500'}`}>
+                  <td className={`px-5 py-3 hidden lg:table-cell text-xs ${isOverdue(task.dueDate) && task.status !== 'done' ? 'text-red-400' : 'text-muted-content'}`}>
                     {formatDate(task.dueDate)}
                   </td>
                 </tr>

@@ -57,9 +57,9 @@ const ActivityPage = () => {
                 <span className="text-lg flex-shrink-0 mt-0.5">{actionEmoji(log.action)}</span>
                 <Avatar user={log.user} size="sm" className="flex-shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-300">
-                    <span className="font-medium text-white">{log.user?.name}</span>{' '}
-                    <span className="text-gray-500">{log.action.replace(/_/g, ' ')}</span>{' '}
+                  <p className="text-sm text-secondary-content">
+                    <span className="font-medium text-primary-content">{log.user?.name}</span>{' '}
+                    <span className="text-muted-content">{log.action.replace(/_/g, ' ')}</span>{' '}
                     <span className="text-primary-400">{log.entityTitle}</span>
                     {log.project && <span className="text-gray-600"> in {log.project.title}</span>}
                   </p>

@@ -66,7 +66,7 @@ const Navbar = () => {
           >
             <Bell size={18} />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold leading-none">
+              <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-primary-content text-xs rounded-full flex items-center justify-center font-bold leading-none">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -85,7 +85,7 @@ const Navbar = () => {
 
               <div className="max-h-80 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <p className="text-center text-gray-500 text-sm py-8">No notifications</p>
+                  <p className="text-center text-muted-content text-sm py-8">No notifications</p>
                 ) : (
                   notifications.slice(0, 10).map((n) => (
                     <button

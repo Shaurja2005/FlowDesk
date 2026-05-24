@@ -7,6 +7,14 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
+const compression = require('compression');
+
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.JWT_ACCESS_SECRET || process.env.JWT_ACCESS_SECRET.length < 64) {
+    console.error('FATAL ERROR: JWT_ACCESS_SECRET is missing or less than 64 characters in production.');
+    process.exit(1);
+  }
+}
 
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
@@ -26,8 +34,10 @@ const githubRoutes = require('./routes/githubRoutes');
 connectDB();
 
 const app = express();
+app.set('trust proxy', 1); // For rate limiters behind a proxy like Render/Vercel
 
 // ─── Security & Parsing ───────────────────────────────────────────────────────
+app.use(compression());
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },

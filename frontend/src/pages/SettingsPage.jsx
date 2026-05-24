@@ -309,7 +309,7 @@ const SettingsPage = () => {
               {/* Unsaved Changes Banner */}
               {profileForm.formState.isDirty && (
                 <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4 z-40 animate-slide-up">
-                  <div className="glass-card bg-dark-800/90 border-primary-500/30 p-4 flex items-center justify-between shadow-2xl">
+                  <div className="glass-card bg-surface/90 border-primary-500/30 p-4 flex items-center justify-between shadow-2xl">
                     <span className="text-sm text-primary-content font-medium">You have unsaved changes</span>
                     <div className="flex gap-3">
                       <button 
@@ -397,9 +397,9 @@ const SettingsPage = () => {
                 <h3 className="text-lg font-semibold text-primary-content mb-2">Connected Accounts</h3>
                 <p className="text-sm text-secondary-content mb-4">Connect your external accounts to enable seamless integrations across FlowDesk.</p>
                 
-                <div className="flex items-center justify-between p-5 border border-primary-500/20 bg-dark-700/30 rounded-xl">
+                <div className="flex items-center justify-between p-5 border border-primary-500/20 bg-elevated/30 rounded-xl">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#24292e] rounded-full flex items-center justify-center text-white shadow-lg">
+                    <div className="w-12 h-12 bg-[#24292e] rounded-full flex items-center justify-center text-primary-content shadow-lg">
                       <GithubIcon size={24} />
                     </div>
                     <div>
@@ -451,7 +451,7 @@ const SettingsPage = () => {
                 <h3 className="text-lg font-semibold text-primary-content mb-4">Coming Soon</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {['GitLab', 'Bitbucket', 'Slack', 'Linear'].map(provider => (
-                    <div key={provider} className="p-4 border border-dark-600 rounded-xl bg-dark-800/50 opacity-70 flex items-center justify-between group hover:opacity-100 transition-opacity">
+                    <div key={provider} className="p-4 border border-dark-600 rounded-xl bg-surface/50 opacity-70 flex items-center justify-between group hover:opacity-100 transition-opacity">
                       <p className="font-medium text-secondary-content">{provider}</p>
                       <button 
                         type="button" 

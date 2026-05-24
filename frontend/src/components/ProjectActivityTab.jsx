@@ -49,7 +49,7 @@ const ProjectActivityTab = ({ projectId }) => {
 
   return (
     <div className="glass-card p-5">
-      <h3 className="text-sm font-semibold text-gray-300 mb-4">Project Activity</h3>
+      <h3 className="text-sm font-semibold text-secondary-content mb-4">Project Activity</h3>
 
       {isLoading && page === 1 ? (
         <div className="space-y-3">{[...Array(5)].map((_, i) => <SkeletonRow key={i} />)}</div>
@@ -63,8 +63,8 @@ const ProjectActivityTab = ({ projectId }) => {
               <div className="flex-1 min-w-0 flex items-start gap-3">
                 <Avatar user={log.user} size="sm" className="flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-gray-300">
-                    <span className="font-medium text-white">{log.user?.name}</span>{' '}
+                  <p className="text-sm text-secondary-content">
+                    <span className="font-medium text-primary-content">{log.user?.name}</span>{' '}
                     {actionLabel(log.action, log.entity, log.entityTitle)}
                   </p>
                   <p className="text-xs text-gray-600 mt-0.5">{formatRelative(log.createdAt)}</p>

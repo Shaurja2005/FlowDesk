@@ -31,7 +31,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-theme">
         <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center flex-shrink-0">
-          <Zap size={16} className="text-white" />
+          <Zap size={16} className="text-primary-content" />
         </div>
         {!collapsed && (
           <span className="text-lg font-bold text-gradient">FlowDesk</span>
@@ -53,7 +53,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
             <div className="relative flex-shrink-0">
               <item.icon size={18} />
               {item.badge && unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-primary-content text-xs rounded-full flex items-center justify-center font-bold">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}

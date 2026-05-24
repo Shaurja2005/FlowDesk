@@ -51,22 +51,40 @@ export const AuthProvider = ({ children }) => {
           payload: { user: data.data, accessToken: token },
         });
       })
-      .catch(() => {
+      .catch((err) => {
         localStorage.removeItem('accessToken');
         dispatch({ type: 'AUTH_ERROR' });
+        if (err.response?.data?.code === 'ACCOUNT_SUSPENDED') {
+          // You could also toast or set a specific state here if needed globally
+        }
       });
   }, []);
 
   const login = useCallback(async (credentials) => {
-    const { data } = await authApi.login(credentials);
-    localStorage.setItem('accessToken', data.data.accessToken);
-    dispatch({ type: 'AUTH_SUCCESS', payload: data.data });
-    return data.data;
+    try {
+      const { data } = await authApi.login(credentials);
+      localStorage.setItem('accessToken', data.data.accessToken);
+      dispatch({ type: 'AUTH_SUCCESS', payload: data.data });
+      return data.data;
+    } catch (error) {
+      if (error.response?.data?.code === 'ACCOUNT_SUSPENDED') {
+        localStorage.removeItem('accessToken');
+        dispatch({ type: 'AUTH_LOGOUT' });
+      }
+      throw error;
+    }
   }, []);
 
   const register = useCallback(async (userData) => {
     const { data } = await authApi.register(userData);
     return data;
+  }, []);
+
+  const loginWithGoogle = useCallback(async (token) => {
+    const { data } = await authApi.googleLogin(token);
+    localStorage.setItem('accessToken', data.data.accessToken);
+    dispatch({ type: 'AUTH_SUCCESS', payload: data.data });
+    return data.data;
   }, []);
 
   const logout = useCallback(async () => {
@@ -80,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ ...state, login, register, loginWithGoogle, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

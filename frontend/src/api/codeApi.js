@@ -12,3 +12,12 @@ export const getFileContent = (owner, repo, path, branch = '') =>
 
 export const getReadme = (owner, repo) =>
   axiosInstance.get(`/integrations/github/repos/${owner}/${repo}/readme`);
+
+export const getCommits = (owner, repo) =>
+  axiosInstance.get(`/integrations/github/repos/${owner}/${repo}/commits`);
+
+export const getPullRequests = (owner, repo) =>
+  axiosInstance.get(`/integrations/github/repos/${owner}/${repo}/pulls`);
+
+export const getBranches = (owner, repo) =>
+  axiosInstance.get(`/integrations/github/repos/${owner}/${repo}/branches`);

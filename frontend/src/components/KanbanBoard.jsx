@@ -24,7 +24,7 @@ const TaskCard = ({ task, index }) => (
         <div className="flex items-start justify-between gap-2">
           <div
             {...provided.dragHandleProps}
-            className="text-gray-600 hover:text-gray-400 mt-0.5 cursor-grab active:cursor-grabbing flex-shrink-0"
+            className="text-gray-600 hover:text-secondary-content mt-0.5 cursor-grab active:cursor-grabbing flex-shrink-0"
           >
             <GripVertical size={14} />
           </div>
@@ -147,7 +147,7 @@ const KanbanBoard = ({ projectId, refreshKey, canManage }) => {
               <div className={`flex items-center justify-between px-3 py-2 rounded-lg border mb-3 ${col.bg} ${col.border}`}>
                 <div className="flex items-center gap-2">
                   <span className={`text-sm font-semibold ${col.color}`}>{col.title}</span>
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-black/20 text-gray-400 font-medium">
+                  <span className="text-xs px-1.5 py-0.5 rounded bg-black/20 text-secondary-content font-medium">
                     {colTasks.length}
                   </span>
                 </div>

@@ -28,7 +28,7 @@ const NotificationsPage = () => {
       <div className="page-header">
         <div>
           <h1 className="page-title">Notifications</h1>
-          {unreadCount > 0 && <p className="text-gray-500 text-sm mt-1">{unreadCount} unread</p>}
+          {unreadCount > 0 && <p className="text-muted-content text-sm mt-1">{unreadCount} unread</p>}
         </div>
         {unreadCount > 0 && (
           <button onClick={markAllRead} className="btn-secondary flex items-center gap-2 text-sm">
@@ -50,7 +50,7 @@ const NotificationsPage = () => {
               >
                 <span className="text-xl flex-shrink-0 mt-0.5">{typeIcon(n.type)}</span>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm ${n.isRead ? 'text-gray-400' : 'text-gray-200'}`}>{n.message}</p>
+                  <p className={`text-sm ${n.isRead ? 'text-secondary-content' : 'text-gray-200'}`}>{n.message}</p>
                   <p className="text-xs text-gray-600 mt-0.5">{formatRelative(n.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">

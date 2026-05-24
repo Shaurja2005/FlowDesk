@@ -45,7 +45,7 @@ const LinkRepoModal = ({ isOpen, onClose, onLink }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-dark-800 border border-dark-600 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh] animate-scale-up">
+      <div className="bg-surface border border-dark-600 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh] animate-scale-up">
         <div className="flex items-center justify-between p-5 border-b border-dark-700">
           <h2 className="text-xl font-semibold text-primary-content flex items-center gap-2">
             <GithubIcon size={20} />
@@ -90,7 +90,7 @@ const LinkRepoModal = ({ isOpen, onClose, onLink }) => {
                       key={repo.id}
                       onClick={() => handleSelect(repo)}
                       disabled={linking}
-                      className="w-full text-left p-3 rounded-lg border border-dark-600 bg-dark-700/50 hover:bg-dark-600 hover:border-primary-500/30 transition-colors flex items-center justify-between group disabled:opacity-50"
+                      className="w-full text-left p-3 rounded-lg border border-dark-600 bg-elevated/50 hover:bg-dark-600 hover:border-primary-500/30 transition-colors flex items-center justify-between group disabled:opacity-50"
                     >
                       <div>
                         <p className="font-medium text-primary-content group-hover:text-primary-400 transition-colors">{repo.fullName}</p>
@@ -98,7 +98,7 @@ const LinkRepoModal = ({ isOpen, onClose, onLink }) => {
                           <p className="text-xs text-muted-content mt-1 line-clamp-1">{repo.description}</p>
                         )}
                       </div>
-                      <span className="text-xs font-medium px-2 py-1 bg-dark-800 rounded text-secondary-content">
+                      <span className="text-xs font-medium px-2 py-1 bg-surface rounded text-secondary-content">
                         {repo.private ? 'Private' : 'Public'}
                       </span>
                     </button>

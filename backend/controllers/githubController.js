@@ -122,18 +122,27 @@ const getCommits = asyncHandler(async (req, res) => {
   const token = await getDecryptedToken(req.user._id);
   const commits = await githubFetch(`/repos/${owner}/${repo}/commits?per_page=20`, token);
 
-  const sanitized = commits.map((c) => ({
-    sha: c.sha,
-    shortSha: c.sha.slice(0, 7),
-    message: c.commit.message,
-    author: {
-      name: c.commit.author.name,
-      date: c.commit.author.date,
-      avatarUrl: c.author?.avatar_url || null,
-      login: c.author?.login || null,
-    },
-    htmlUrl: c.html_url,
-  }));
+  const sanitized = commits.map((c) => {
+    let msg = c.commit.message;
+    const taskMatch = msg.match(/KAN-\d+/g);
+    const taskKeys = taskMatch ? [...new Set(taskMatch)] : [];
+    
+    if (msg.length > 80) msg = msg.slice(0, 80) + '...';
+
+    return {
+      sha: c.sha,
+      shortSha: c.sha.slice(0, 7),
+      message: msg,
+      taskKeys,
+      author: {
+        name: c.commit.author.name,
+        date: c.commit.author.date,
+        avatarUrl: c.author?.avatar_url || null,
+        login: c.author?.login || null,
+      },
+      htmlUrl: c.html_url,
+    };
+  });
 
   successResponse(res, sanitized);
 });

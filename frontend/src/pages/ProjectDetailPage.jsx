@@ -14,7 +14,7 @@ import CreateTaskDrawer from '../components/CreateTaskDrawer';
 import ConnectRepoEmptyState from '../components/DevTab/ConnectRepoEmptyState';
 import LinkRepoModal from '../components/DevTab/LinkRepoModal';
 import ProjectDevTab from '../components/DevTab/ProjectDevTab';
-import CodeSection from '../components/CodeSection';
+import CodeSection from '../components/CodeSection/CodeSection';
 import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
 
@@ -91,9 +91,9 @@ const ProjectDetailPage = () => {
               style={{ background: project.coverColor || '#6C63FF' }}
             />
             <div>
-              <h1 className="text-2xl font-bold text-white">{project.title}</h1>
+              <h1 className="text-2xl font-bold text-primary-content">{project.title}</h1>
               {project.description && (
-                <p className="text-gray-500 text-sm mt-1 max-w-xl">{project.description}</p>
+                <p className="text-muted-content text-sm mt-1 max-w-xl">{project.description}</p>
               )}
               <div className="flex flex-wrap items-center gap-3 mt-2">
                 <StatusBadge status={project.status} />
@@ -109,8 +109,8 @@ const ProjectDetailPage = () => {
           {/* Progress + actions */}
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <p className="text-xs text-gray-500">Progress</p>
-              <p className="text-lg font-bold text-white">{project.progress || 0}%</p>
+              <p className="text-xs text-muted-content">Progress</p>
+              <p className="text-lg font-bold text-primary-content">{project.progress || 0}%</p>
             </div>
             {canCreateTask && (
               <button
@@ -142,7 +142,7 @@ const ProjectDetailPage = () => {
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
               activeTab === tab
                 ? 'border-primary-500 text-primary-400'
-                : 'border-transparent text-gray-500 hover:text-gray-300'
+                : 'border-transparent text-muted-content hover:text-secondary-content'
             }`}
           >
             {tab === 'Board' && <Kanban size={14} />}

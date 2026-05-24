@@ -99,10 +99,10 @@ const ProjectMembersTab = ({ project, onUpdate, canManage }) => {
                 <Avatar user={u} size="md" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-white">{u?.name}</p>
+                    <p className="text-sm font-medium text-primary-content">{u?.name}</p>
                     {isOwner && <Crown size={13} className="text-amber-400" />}
                   </div>
-                  <p className="text-xs text-gray-500">{u?.email}</p>
+                  <p className="text-xs text-muted-content">{u?.email}</p>
                 </div>
                 <RoleBadge role={member.role} />
                 {canManage && !isOwner && (

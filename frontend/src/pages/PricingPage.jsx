@@ -110,7 +110,7 @@ const PricingPage = () => {
           >
             {plan.highlight && (
               <div className="absolute -top-4 left-0 right-0 flex justify-center">
-                <span className="bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-lg">
+                <span className="bg-primary-500 text-primary-content text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-lg">
                   Most popular
                 </span>
               </div>
@@ -128,7 +128,7 @@ const PricingPage = () => {
             <button
               className={`mt-4 w-full py-3 px-4 rounded-lg font-medium transition-colors ${
                 plan.highlight 
-                  ? 'bg-primary-500 text-white hover:bg-primary-600 shadow-md shadow-primary-500/20' 
+                  ? 'bg-primary-500 text-primary-content hover:bg-primary-600 shadow-md shadow-primary-500/20' 
                   : 'bg-transparent border border-primary-500 text-primary-500 hover:bg-primary-500/10'
               }`}
             >

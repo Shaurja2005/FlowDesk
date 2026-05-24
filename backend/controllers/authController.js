@@ -5,6 +5,7 @@ const { generateTokens, setRefreshCookie } = require('../utils/generateToken');
 const { sendEmail, welcomeEmail } = require('../utils/sendEmail');
 const { successResponse, errorResponse } = require('../utils/response');
 const { supabaseAdmin } = require('../config/supabaseAdmin');
+const { streamUpload } = require('../utils/cloudinaryHelper');
 
 // ─── Register ─────────────────────────────────────────────────────────────────
 const register = asyncHandler(async (req, res) => {
@@ -120,6 +121,86 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
+// ─── Google OAuth Login ────────────────────────────────────────────────────────
+const googleLogin = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return errorResponse(res, 'No Supabase token provided', 400);
+  }
+
+  // Verify the Supabase token
+  const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+
+  if (error || !user) {
+    return errorResponse(res, 'Invalid or expired Google token', 401);
+  }
+
+  // Extract user details
+  const email = user.email;
+  const name = user.user_metadata?.full_name || user.user_metadata?.name || email.split('@')[0];
+  const avatarUrl = user.user_metadata?.avatar_url || '';
+
+  // Check if user already exists in MongoDB
+  let existingUser = await User.findOne({ email });
+
+  if (!existingUser) {
+    // Automatically register the user if they don't exist
+    existingUser = await User.create({
+      name,
+      email,
+      role: 'developer', // Default role
+      authProvider: 'google',
+      isEmailVerified: true, // Google emails are pre-verified
+      supabaseId: user.id,
+      profile: { avatarUrl },
+    });
+  } else {
+    // If they exist but signed up locally previously, we just link it
+    if (!existingUser.supabaseId) {
+      existingUser.supabaseId = user.id;
+    }
+    existingUser.isEmailVerified = true;
+    if (!existingUser.profile?.avatarUrl && avatarUrl) {
+      if (!existingUser.profile) existingUser.profile = {};
+      existingUser.profile.avatarUrl = avatarUrl;
+    }
+    await existingUser.save({ validateBeforeSave: false });
+  }
+
+  // Generate FlowDesk tokens
+  const accessToken = generateTokens(existingUser._id);
+  const refreshToken = jwt.sign(
+    { id: existingUser._id },
+    process.env.JWT_REFRESH_SECRET,
+    { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
+  );
+
+  existingUser.refreshToken = refreshToken;
+  existingUser.lastLogin = new Date();
+  existingUser.loginAttempts = 0;
+  existingUser.lockUntil = null;
+  await existingUser.save({ validateBeforeSave: false });
+
+  setRefreshCookie(res, refreshToken);
+
+  return successResponse(
+    res,
+    {
+      accessToken,
+      user: {
+        id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email,
+        role: existingUser.role,
+        profile: existingUser.profile,
+        github: !!existingUser.github?.accessToken,
+      },
+    },
+    'Successfully logged in with Google'
+  );
+});
+
 // ─── Logout ───────────────────────────────────────────────────────────────────
 const logout = asyncHandler(async (req, res) => {
   const { refreshToken } = req.cookies;
@@ -216,7 +297,8 @@ const updateProfile = asyncHandler(async (req, res) => {
   if (bio !== undefined) user.profile.bio = bio;
 
   if (req.file) {
-    user.profile.avatarUrl = `/uploads/${req.file.filename}`;
+    const result = await streamUpload(req);
+    user.profile.avatarUrl = result.secure_url;
   }
 
   await user.save({ validateBeforeSave: true });
@@ -279,6 +361,7 @@ const resendVerification = asyncHandler(async (req, res) => {
 module.exports = {
   register,
   login,
+  googleLogin,
   logout,
   refreshAccessToken,
   getMe,

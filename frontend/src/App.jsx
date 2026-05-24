@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import PendingVerificationPage from './pages/PendingVerificationPage';
+import AuthCallbackPage from './pages/AuthCallbackPage';
 import DashboardPage from './pages/DashboardPage';
 import ProjectsListPage from './pages/ProjectsListPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
@@ -51,6 +52,7 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
               <Route path="/auth/pending-verification" element={<PendingVerificationPage />} />
+              <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
               {/* Protected routes — inside MainLayout */}
               <Route

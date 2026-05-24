@@ -6,10 +6,10 @@ export const Spinner = ({ size = 'md', className = '' }) => {
 };
 
 export const FullPageSpinner = () => (
-  <div className="fixed inset-0 flex items-center justify-center bg-dark-900/80 z-50">
+  <div className="fixed inset-0 flex items-center justify-center bg-base/80 z-50">
     <div className="text-center">
       <Spinner size="xl" />
-      <p className="mt-3 text-gray-400 text-sm">Loading...</p>
+      <p className="mt-3 text-secondary-content text-sm">Loading...</p>
     </div>
   </div>
 );

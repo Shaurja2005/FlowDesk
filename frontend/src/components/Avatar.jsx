@@ -42,7 +42,7 @@ const Avatar = ({ user, size = 'md', className = '', clickable = true }) => {
   } else {
     content = (
       <div
-        className={`${sizeClass} ${getColor(user?.name)} rounded-full flex items-center justify-center font-semibold text-white ring-2 ring-white/10 transition-all ${cursorClass} ${className}`}
+        className={`${sizeClass} ${getColor(user?.name)} rounded-full flex items-center justify-center font-semibold text-primary-content ring-2 ring-white/10 transition-all ${cursorClass} ${className}`}
         onClick={handleClick}
       >
         {getInitials(user?.name)}
@@ -70,7 +70,7 @@ export const AvatarGroup = ({ users = [], max = 4, size = 'sm' }) => {
         <Avatar key={u._id || i} user={u} size={size} />
       ))}
       {remaining > 0 && (
-        <div className={`w-8 h-8 rounded-full bg-dark-400 border-2 border-dark-700 flex items-center justify-center text-xs text-gray-400 font-medium`}>
+        <div className={`w-8 h-8 rounded-full bg-dark-400 border-2 border-dark-700 flex items-center justify-center text-xs text-secondary-content font-medium`}>
           +{remaining}
         </div>
       )}

@@ -29,8 +29,8 @@ const StatCard = ({ icon: Icon, label, value, sub, color = 'primary', trend }) =
         <Icon size={20} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-gray-500 text-sm">{label}</p>
-        <p className="text-2xl font-bold text-white mt-0.5">{value ?? '—'}</p>
+        <p className="text-muted-content text-sm">{label}</p>
+        <p className="text-2xl font-bold text-primary-content mt-0.5">{value ?? '—'}</p>
         {sub && <p className="text-xs text-gray-600 mt-1">{sub}</p>}
       </div>
     </div>
@@ -99,7 +99,7 @@ const DashboardPage = () => {
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},{' '}
             <span className="text-gradient">{user?.name?.split(' ')[0]}</span> 👋
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Here's what's happening with your projects</p>
+          <p className="text-muted-content text-sm mt-1">Here's what's happening with your projects</p>
         </div>
         <Link to="/projects" className="btn-primary flex items-center gap-2">
           <FolderKanban size={16} /> View Projects
@@ -118,7 +118,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Area Chart: weekly completions */}
         <div className="lg:col-span-2 glass-card p-5">
-          <h2 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-secondary-content mb-4 flex items-center gap-2">
             <TrendingUp size={16} className="text-primary-400" /> Tasks Completed (Last 7 Days)
           </h2>
           {chartData.length > 0 ? (
@@ -144,7 +144,7 @@ const DashboardPage = () => {
 
         {/* Pie Chart: task by status */}
         <div className="glass-card p-5">
-          <h2 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-secondary-content mb-4 flex items-center gap-2">
             <BarChart2 size={16} className="text-accent-cyan" /> Tasks by Status
           </h2>
           {taskStatusData.length > 0 ? (
@@ -164,9 +164,9 @@ const DashboardPage = () => {
                   <div key={item.name} className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: COLORS[i % COLORS.length] }} />
-                      <span className="text-gray-400 capitalize">{item.name.replace('-', ' ')}</span>
+                      <span className="text-secondary-content capitalize">{item.name.replace('-', ' ')}</span>
                     </div>
-                    <span className="text-gray-300 font-medium">{item.value}</span>
+                    <span className="text-secondary-content font-medium">{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -182,7 +182,7 @@ const DashboardPage = () => {
         {/* My Tasks */}
         <div className="glass-card p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-gray-300">My Tasks</h2>
+            <h2 className="text-sm font-semibold text-secondary-content">My Tasks</h2>
             <Link to="/tasks" className="text-xs text-primary-400 hover:text-primary-300 flex items-center gap-1">
               View all <ArrowRight size={12} />
             </Link>
@@ -216,7 +216,7 @@ const DashboardPage = () => {
         {/* Recent Activity */}
         <div className="glass-card p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-gray-300">Recent Activity</h2>
+            <h2 className="text-sm font-semibold text-secondary-content">Recent Activity</h2>
             <Link to="/activity" className="text-xs text-primary-400 hover:text-primary-300 flex items-center gap-1">
               View all <ArrowRight size={12} />
             </Link>
@@ -229,9 +229,9 @@ const DashboardPage = () => {
                 <div key={log._id} className="flex items-start gap-3">
                   <Avatar user={log.user} size="xs" className="mt-0.5 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-300">
-                      <span className="font-medium text-white">{log.user?.name}</span>{' '}
-                      <span className="text-gray-500">{log.action.replace('_', ' ')}</span>{' '}
+                    <p className="text-sm text-secondary-content">
+                      <span className="font-medium text-primary-content">{log.user?.name}</span>{' '}
+                      <span className="text-muted-content">{log.action.replace('_', ' ')}</span>{' '}
                       <span className="text-primary-400 truncate">{log.entityTitle}</span>
                     </p>
                     <p className="text-xs text-gray-600 mt-0.5">{formatRelative(log.createdAt)}</p>

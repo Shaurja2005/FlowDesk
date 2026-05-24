@@ -8,7 +8,7 @@ const Pagination = ({ pagination, onPageChange }) => {
   const to = Math.min(page * limit, total);
 
   return (
-    <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
+    <div className="flex items-center justify-between mt-4 text-sm text-secondary-content">
       <span>
         Showing {from}–{to} of {total}
       </span>
@@ -29,8 +29,8 @@ const Pagination = ({ pagination, onPageChange }) => {
               onClick={() => onPageChange(p)}
               className={`w-8 h-8 rounded-lg text-xs font-medium transition-colors ${
                 p === page
-                  ? 'bg-primary-500 text-white'
-                  : 'hover:bg-white/5 text-gray-400'
+                  ? 'bg-primary-500 text-primary-content'
+                  : 'hover:bg-white/5 text-secondary-content'
               }`}
             >
               {p}

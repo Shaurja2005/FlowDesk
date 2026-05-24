@@ -43,7 +43,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-white/5">
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          <h2 className="text-lg font-semibold text-primary-content">{title}</h2>
           <button onClick={onClose} className="btn-ghost p-1.5">
             <X size={18} />
           </button>
@@ -65,7 +65,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
 
 export const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message, confirmLabel = 'Delete', isLoading }) => (
   <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-    <p className="text-gray-300 text-sm">{message}</p>
+    <p className="text-secondary-content text-sm">{message}</p>
     <div className="flex justify-end gap-3 mt-6">
       <button onClick={onClose} className="btn-secondary">Cancel</button>
       <button

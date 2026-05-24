@@ -44,12 +44,12 @@ const ProjectCard = ({ project }) => (
       </div>
 
       {project.description && (
-        <p className="text-sm text-gray-500 line-clamp-2 mb-3">{project.description}</p>
+        <p className="text-sm text-muted-content line-clamp-2 mb-3">{project.description}</p>
       )}
 
       {/* Progress bar */}
       <div className="mb-3">
-        <div className="flex justify-between text-xs text-gray-500 mb-1">
+        <div className="flex justify-between text-xs text-muted-content mb-1">
           <span>{project.taskCount || 0} tasks</span>
           <span>{project.progress || 0}%</span>
         </div>
@@ -66,7 +66,7 @@ const ProjectCard = ({ project }) => (
 
       <div className="flex items-center justify-between mt-auto">
         <StatusBadge status={project.status} />
-        <div className="flex items-center gap-3 text-xs text-gray-500">
+        <div className="flex items-center gap-3 text-xs text-muted-content">
           {project.endDate && (
             <span className="flex items-center gap-1">
               <Calendar size={11} />
@@ -121,7 +121,7 @@ const ProjectsListPage = () => {
       <div className="page-header">
         <div>
           <h1 className="page-title">Projects</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-muted-content text-sm mt-1">
             {pagination?.total || 0} projects
           </p>
         </div>
@@ -135,7 +135,7 @@ const ProjectsListPage = () => {
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="relative flex-1 min-w-48">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-content" />
           <input
             type="text"
             placeholder="Search projects..."

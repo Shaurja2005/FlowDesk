@@ -34,7 +34,7 @@ export const RoleBadge = ({ role }) => {
     developer: 'bg-green-500/20 text-green-300',
   };
   return (
-    <span className={`badge ${styles[role] || 'bg-gray-500/20 text-gray-300'}`}>
+    <span className={`badge ${styles[role] || 'bg-gray-500/20 text-secondary-content'}`}>
       {role?.charAt(0).toUpperCase() + role?.slice(1)}
     </span>
   );
