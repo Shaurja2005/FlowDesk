@@ -34,6 +34,17 @@ const getUserById = asyncHandler(async (req, res) => {
   return successResponse(res, user);
 });
 
+// ─── Get Public Profile ──────────────────────────────────────────────────────────
+const getPublicProfile = asyncHandler(async (req, res) => {
+  // Only select non-sensitive fields
+  const user = await User.findById(req.params.id)
+    .select('_id name profile createdAt');
+    
+  if (!user) return errorResponse(res, 'User not found', 404);
+  
+  return successResponse(res, user);
+});
+
 // ─── Update User (Admin) ──────────────────────────────────────────────────────
 const updateUser = asyncHandler(async (req, res) => {
   const { name, role, isActive } = req.body;
@@ -71,4 +82,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   return successResponse(res, user, 'User deactivated');
 });
 
-module.exports = { getUsers, getUserById, updateUser, deleteUser };
+module.exports = { getUsers, getUserById, getPublicProfile, updateUser, deleteUser };

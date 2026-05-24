@@ -33,7 +33,7 @@ const register = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        avatar: user.avatar,
+        profile: user.profile,
       },
     },
     'Registered successfully',
@@ -68,7 +68,7 @@ const login = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      avatar: user.avatar,
+      profile: user.profile,
     },
   });
 });
@@ -117,35 +117,66 @@ const getMe = asyncHandler(async (req, res) => {
   return successResponse(res, req.user);
 });
 
-// ─── Change Password ──────────────────────────────────────────────────────────
-const changePassword = asyncHandler(async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+// ─── Update Account ───────────────────────────────────────────────────────────
+const updateAccount = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword, email } = req.body;
 
   const user = await User.findById(req.user._id).select('+password');
   if (!(await user.matchPassword(currentPassword))) {
     return errorResponse(res, 'Current password is incorrect', 400);
   }
 
-  user.password = newPassword;
+  if (newPassword) user.password = newPassword;
+  if (email) user.email = email;
+  
   await user.save();
 
-  return successResponse(res, null, 'Password changed successfully');
+  return successResponse(
+    res,
+    { email: user.email },
+    'Account updated successfully'
+  );
 });
 
 // ─── Update Profile ───────────────────────────────────────────────────────────
 const updateProfile = asyncHandler(async (req, res) => {
-  const { name, email } = req.body;
-  const update = {};
-  if (name) update.name = name;
-  if (email) update.email = email;
-  if (req.file) update.avatar = `/uploads/${req.file.filename}`;
+  const {
+    name,
+    publicName,
+    pronouns,
+    jobTitle,
+    department,
+    organization,
+    basedIn,
+    timezone,
+    bio,
+  } = req.body;
 
-  const user = await User.findByIdAndUpdate(req.user._id, update, {
-    new: true,
-    runValidators: true,
-  }).select('-password -refreshToken');
+  const user = await User.findById(req.user._id);
+  
+  if (name) user.name = name;
+  
+  // Initialize profile if it somehow doesn't exist
+  if (!user.profile) user.profile = {};
 
-  return successResponse(res, user, 'Profile updated');
+  if (publicName !== undefined) user.profile.publicName = publicName;
+  if (pronouns !== undefined) user.profile.pronouns = pronouns;
+  if (jobTitle !== undefined) user.profile.jobTitle = jobTitle;
+  if (department !== undefined) user.profile.department = department;
+  if (organization !== undefined) user.profile.organization = organization;
+  if (basedIn !== undefined) user.profile.basedIn = basedIn;
+  if (timezone !== undefined) user.profile.timezone = timezone;
+  if (bio !== undefined) user.profile.bio = bio;
+
+  if (req.file) {
+    user.profile.avatarUrl = `/uploads/${req.file.filename}`;
+  }
+
+  await user.save({ validateBeforeSave: true });
+
+  const updatedUser = await User.findById(req.user._id).select('-password -refreshToken');
+
+  return successResponse(res, updatedUser, 'Profile updated');
 });
 
 module.exports = {
@@ -154,6 +185,6 @@ module.exports = {
   logout,
   refreshAccessToken,
   getMe,
-  changePassword,
+  updateAccount,
   updateProfile,
 };

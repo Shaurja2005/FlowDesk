@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { getUsers, getUserById, updateUser, deleteUser } = require('../controllers/userController');
+const { getUsers, getUserById, getPublicProfile, updateUser, deleteUser } = require('../controllers/userController');
 const { protect } = require('../middlewares/auth');
 const roleGuard = require('../middlewares/roleGuard');
 const validate = require('../middlewares/validate');
 
-// All user routes require auth + admin role
+// Public profile route (any authenticated user)
+router.get('/:id/public', protect, getPublicProfile);
+
+// Admin-only routes
 router.use(protect, roleGuard('admin'));
 
 router.get('/', getUsers);

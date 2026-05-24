@@ -3,7 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const {
   register, login, logout, refreshAccessToken,
-  getMe, changePassword, updateProfile,
+  getMe, updateAccount, updateProfile,
 } = require('../controllers/authController');
 const { protect } = require('../middlewares/auth');
 const validate = require('../middlewares/validate');
@@ -42,19 +42,20 @@ router.post('/refresh', refreshAccessToken);
 // GET /api/auth/me
 router.get('/me', protect, getMe);
 
-// PUT /api/auth/me  (profile + avatar)
-router.put('/me', protect, upload.single('avatar'), updateProfile);
+// PUT /api/auth/profile
+router.put('/profile', protect, upload.single('avatar'), updateProfile);
 
-// PUT /api/auth/change-password
+// PUT /api/auth/account
 router.put(
-  '/change-password',
+  '/account',
   protect,
   [
     body('currentPassword').notEmpty().withMessage('Current password is required'),
-    body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
+    body('newPassword').optional().isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
+    body('email').optional().isEmail().withMessage('Valid email is required'),
   ],
   validate,
-  changePassword
+  updateAccount
 );
 
 module.exports = router;

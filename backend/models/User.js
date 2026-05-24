@@ -29,9 +29,16 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(ROLES),
       default: ROLES.DEVELOPER,
     },
-    avatar: {
-      type: String,
-      default: null,
+    profile: {
+      publicName:   { type: String, default: '' },
+      pronouns:     { type: String, default: '' },
+      jobTitle:     { type: String, default: '' },
+      department:   { type: String, default: '' },
+      organization: { type: String, default: '' },
+      basedIn:      { type: String, default: '' },
+      timezone:     { type: String, default: '' },
+      bio:          { type: String, default: '', maxlength: 300 },
+      avatarUrl:    { type: String, default: '' }
     },
     isActive: {
       type: Boolean,

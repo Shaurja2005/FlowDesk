@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { getInitials } from '../utils/constants';
+import { getUserAvatar } from '../utils/userUtils';
+import PublicProfilePanel from './PublicProfilePanel';
 
 const COLORS = [
   'bg-primary-500', 'bg-accent-cyan', 'bg-pink-500',
@@ -10,26 +13,50 @@ const getColor = (name = '') => {
   return COLORS[idx];
 };
 
-const Avatar = ({ user, size = 'md', className = '' }) => {
+const Avatar = ({ user, size = 'md', className = '', clickable = true }) => {
+  const [showProfile, setShowProfile] = useState(false);
   const sizes = { xs: 'w-6 h-6 text-xs', sm: 'w-8 h-8 text-xs', md: 'w-9 h-9 text-sm', lg: 'w-11 h-11 text-base', xl: 'w-14 h-14 text-lg' };
   const sizeClass = sizes[size] || sizes.md;
 
-  if (user?.avatar) {
-    return (
+  const avatarUrl = getUserAvatar(user);
+  
+  const handleClick = (e) => {
+    if (!clickable || !user?._id) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setShowProfile(true);
+  };
+
+  const cursorClass = clickable && user?._id ? 'cursor-pointer hover:ring-primary-500/50' : '';
+
+  let content;
+  if (avatarUrl) {
+    content = (
       <img
-        src={user.avatar.startsWith('http') ? user.avatar : `http://localhost:5000${user.avatar}`}
-        alt={user.name}
-        className={`${sizeClass} rounded-full object-cover ring-2 ring-white/10 ${className}`}
+        src={avatarUrl.startsWith('http') ? avatarUrl : `http://localhost:5000${avatarUrl}`}
+        alt={user?.name || 'User'}
+        className={`${sizeClass} rounded-full object-cover ring-2 ring-white/10 transition-all ${cursorClass} ${className}`}
+        onClick={handleClick}
       />
+    );
+  } else {
+    content = (
+      <div
+        className={`${sizeClass} ${getColor(user?.name)} rounded-full flex items-center justify-center font-semibold text-white ring-2 ring-white/10 transition-all ${cursorClass} ${className}`}
+        onClick={handleClick}
+      >
+        {getInitials(user?.name)}
+      </div>
     );
   }
 
   return (
-    <div
-      className={`${sizeClass} ${getColor(user?.name)} rounded-full flex items-center justify-center font-semibold text-white ring-2 ring-white/10 ${className}`}
-    >
-      {getInitials(user?.name)}
-    </div>
+    <>
+      {content}
+      {showProfile && user && (
+        <PublicProfilePanel userId={user._id} onClose={() => setShowProfile(false)} />
+      )}
+    </>
   );
 };
 
