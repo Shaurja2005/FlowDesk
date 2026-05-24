@@ -46,7 +46,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="h-14 bg-dark-800/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-5 flex-shrink-0 z-10 sticky top-0">
+    <header className="h-14 layout-navbar flex items-center justify-between px-5 flex-shrink-0 z-10 sticky top-0">
       {/* Left: Breadcrumb placeholder or search */}
       <div className="flex-1" />
 
@@ -74,8 +74,8 @@ const Navbar = () => {
 
           {showNotifs && (
             <div className="absolute right-0 top-full mt-2 w-80 glass-card shadow-glass border border-white/5 animate-slide-up overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-                <span className="font-semibold text-sm text-white">Notifications</span>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-theme">
+                <span className="font-semibold text-sm text-primary-content">Notifications</span>
                 {unreadCount > 0 && (
                   <button onClick={markAllRead} className="text-xs text-primary-400 hover:text-primary-300 flex items-center gap-1">
                     <Check size={12} /> Mark all read
@@ -91,12 +91,12 @@ const Navbar = () => {
                     <button
                       key={n._id}
                       onClick={() => { markRead(n._id); setShowNotifs(false); if (n.link) navigate(n.link); }}
-                      className={`w-full flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left ${!n.isRead ? 'bg-primary-500/5' : ''}`}
+                      className={`w-full flex items-start gap-3 px-4 py-3 hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-left ${!n.isRead ? 'bg-primary-500/5' : ''}`}
                     >
                       <span className="text-base flex-shrink-0 mt-0.5">{notifTypeIcon(n.type)}</span>
                       <div className="min-w-0 flex-1">
-                        <p className={`text-sm ${n.isRead ? 'text-gray-400' : 'text-gray-200'}`}>{n.message}</p>
-                        <p className="text-xs text-gray-600 mt-0.5">{formatRelative(n.createdAt)}</p>
+                        <p className={`text-sm ${n.isRead ? 'text-secondary-content' : 'text-primary-content'}`}>{n.message}</p>
+                        <p className="text-xs text-muted-content mt-0.5">{formatRelative(n.createdAt)}</p>
                       </div>
                       {!n.isRead && (
                         <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0 mt-1.5" />
@@ -106,7 +106,7 @@ const Navbar = () => {
                 )}
               </div>
 
-              <div className="border-t border-white/5 px-4 py-2">
+              <div className="border-t border-theme px-4 py-2">
                 <Link
                   to="/notifications"
                   onClick={() => setShowNotifs(false)}
@@ -126,8 +126,8 @@ const Navbar = () => {
             className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
           >
             <Avatar user={user} size="sm" />
-            <span className="text-sm font-medium text-gray-200 hidden sm:block">{user?.name}</span>
-            <ChevronDown size={14} className="text-gray-500 hidden sm:block" />
+            <span className="text-sm font-medium text-primary-content hidden sm:block">{user?.name}</span>
+            <ChevronDown size={14} className="text-muted-content hidden sm:block" />
           </button>
 
           {showProfile && (
@@ -135,18 +135,18 @@ const Navbar = () => {
               <Link
                 to="/settings"
                 onClick={() => setShowProfile(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-secondary-content hover:bg-black/5 dark:hover:bg-white/5 hover:text-primary-content transition-colors"
               >
                 <User size={16} /> Profile
               </Link>
               <Link
                 to="/settings"
                 onClick={() => setShowProfile(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-secondary-content hover:bg-black/5 dark:hover:bg-white/5 hover:text-primary-content transition-colors"
               >
                 <Settings size={16} /> Settings
               </Link>
-              <div className="border-t border-white/5 my-1" />
+              <div className="border-t border-theme my-1" />
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 w-full transition-colors"

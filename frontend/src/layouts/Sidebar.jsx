@@ -26,10 +26,10 @@ const Sidebar = ({ collapsed, onToggle }) => {
 
   return (
     <aside
-      className={`${collapsed ? 'w-16' : 'w-64'} flex-shrink-0 h-full flex flex-col bg-dark-800 border-r border-white/5 transition-all duration-300 relative z-20`}
+      className={`${collapsed ? 'w-16' : 'w-64'} flex-shrink-0 h-full flex flex-col layout-sidebar transition-all duration-300 relative z-20`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-white/5">
+      <div className="flex items-center gap-3 px-4 py-5 border-b border-theme">
         <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center flex-shrink-0">
           <Zap size={16} className="text-white" />
         </div>
@@ -65,12 +65,12 @@ const Sidebar = ({ collapsed, onToggle }) => {
 
       {/* User info */}
       {!collapsed && (
-        <div className="p-3 border-t border-white/5">
+        <div className="p-3 border-t border-theme">
           <div className="flex items-center gap-3 px-2 py-2 rounded-lg">
             <Avatar user={user} size="sm" />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              <p className="text-sm font-medium text-primary-content truncate">{user?.name}</p>
+              <p className="text-xs text-muted-content capitalize">{user?.role}</p>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
       {/* Collapse toggle */}
       <button
         onClick={onToggle}
-        className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-dark-600 border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-primary-500/50 transition-colors z-30"
+        className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-elevated border border-theme rounded-full flex items-center justify-center text-secondary-content hover:text-primary-content hover:border-primary-500/50 transition-colors z-30"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
         {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
