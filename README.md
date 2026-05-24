@@ -1,5 +1,5 @@
 # 🚀 FlowDesk — Project & Task Management Platform
-
+total lines of code: 17.5k+
 > A full-stack project and task management application built from scratch with the MERN stack, inspired by Jira and GoodDay.work.
 
 ![FlowDesk Banner](https://via.placeholder.com/1200x400/6C63FF/FFFFFF?text=FlowDesk+%E2%80%94+MERN+Project+Management)
