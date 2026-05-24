@@ -44,6 +44,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    supabaseId: {
+      type: String,
+      default: null,
+    },
     lastLogin: {
       type: Date,
       default: null,
@@ -51,6 +59,26 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
       select: false,
+    },
+    loginAttempts: {
+      type: Number,
+      default: 0,
+    },
+    lockUntil: {
+      type: Date,
+      default: null,
+    },
+    github: {
+      accessToken: { type: String, select: false, default: null },
+      username:    { type: String, default: '' },
+      avatarUrl:   { type: String, default: '' },
+      connectedAt: { type: Date, default: null },
+      repos: [
+        {
+          fullName:        { type: String },
+          linkedProjectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', default: null },
+        },
+      ],
     },
   },
   {

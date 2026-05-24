@@ -4,9 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '../context/AuthContext';
 import { authApi } from '../api/authApi';
+import { githubApi } from '../api/githubApi';
 import Avatar from '../components/Avatar';
 import toast from 'react-hot-toast';
-import { User, Lock, Bell, LayoutGrid, AlertTriangle, Camera } from 'lucide-react';
+import { User, Lock, Bell, LayoutGrid, AlertTriangle, Camera, Link as LinkIcon, Trash2 } from 'lucide-react';
+import GithubIcon from '../components/icons/GithubIcon';
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -85,6 +87,22 @@ const SettingsPage = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [selectedTimezone]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('connected') === 'github') {
+      authApi.getMe().then(({ data }) => {
+        updateUser(data.data);
+        toast.success('GitHub account connected successfully!');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }).catch(() => {
+        toast.error('Failed to refresh user data after GitHub connection');
+      });
+    } else if (params.get('error') === 'oauth_failed') {
+      toast.error('GitHub connection failed. Please try again.');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [updateUser]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -362,30 +380,90 @@ const SettingsPage = () => {
                   </button>
                 </div>
               </section>
-
-              <section className="glass-card p-6">
-                <h3 className="text-lg font-semibold text-primary-content mb-4">Connected accounts</h3>
-                <div className="flex items-center justify-between p-4 border border-theme rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-dark-700 rounded-full flex items-center justify-center text-white">
-                      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="css-i6dzq1"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                    </div>
-                    <div>
-                      <p className="font-medium text-primary-content">GitHub</p>
-                      <p className="text-sm text-muted-content">Not connected</p>
-                    </div>
-                  </div>
-                  <button type="button" className="btn-ghost" disabled>Connect</button>
-                </div>
-              </section>
             </form>
           )}
 
           {/* Placeholders for other tabs */}
-          {['notifications', 'integrations', 'danger'].includes(activeTab) && (
+          {['notifications', 'danger'].includes(activeTab) && (
             <div className="glass-card p-12 text-center">
               <h3 className="text-lg font-semibold text-primary-content mb-2 capitalize">{activeTab}</h3>
               <p className="text-secondary-content">This section is currently under development.</p>
+            </div>
+          )}
+
+          {activeTab === 'integrations' && (
+            <div className="space-y-6 max-w-3xl animate-fade-in">
+              <section className="glass-card p-6 space-y-5">
+                <h3 className="text-lg font-semibold text-primary-content mb-2">Connected Accounts</h3>
+                <p className="text-sm text-secondary-content mb-4">Connect your external accounts to enable seamless integrations across FlowDesk.</p>
+                
+                <div className="flex items-center justify-between p-5 border border-primary-500/20 bg-dark-700/30 rounded-xl">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#24292e] rounded-full flex items-center justify-center text-white shadow-lg">
+                      <GithubIcon size={24} />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-primary-content text-base">GitHub</p>
+                      {user?.github?.accessToken ? (
+                        <div className="flex items-center gap-2 mt-0.5">
+                          {user.github.avatarUrl && <img src={user.github.avatarUrl} alt="GitHub Avatar" className="w-5 h-5 rounded-full" />}
+                          <span className="text-sm text-green-400 font-medium">Connected as {user.github.username}</span>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-content mt-0.5">Not connected</p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {user?.github?.accessToken ? (
+                    <button 
+                      type="button" 
+                      className="btn-ghost text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                      onClick={async () => {
+                        if (confirm('Are you sure you want to disconnect GitHub? Linked repositories and PRs will no longer sync.')) {
+                          try {
+                            await githubApi.disconnect();
+                            const { data } = await authApi.getMe();
+                            updateUser(data.data);
+                            toast.success('GitHub disconnected');
+                          } catch (err) {
+                            toast.error('Failed to disconnect GitHub');
+                          }
+                        }
+                      }}
+                    >
+                      <Trash2 size={16} className="mr-2 inline" />
+                      Disconnect
+                    </button>
+                  ) : (
+                    <a 
+                      href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/integrations/github/connect`} 
+                      className="btn-primary"
+                    >
+                      <LinkIcon size={16} className="mr-2 inline" />
+                      Connect GitHub
+                    </a>
+                  )}
+                </div>
+              </section>
+
+              <section className="glass-card p-6">
+                <h3 className="text-lg font-semibold text-primary-content mb-4">Coming Soon</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {['GitLab', 'Bitbucket', 'Slack', 'Linear'].map(provider => (
+                    <div key={provider} className="p-4 border border-dark-600 rounded-xl bg-dark-800/50 opacity-70 flex items-center justify-between group hover:opacity-100 transition-opacity">
+                      <p className="font-medium text-secondary-content">{provider}</p>
+                      <button 
+                        type="button" 
+                        className="text-xs font-medium px-3 py-1.5 rounded-md bg-dark-600 text-muted-content hover:text-primary-content hover:bg-dark-500 transition-colors"
+                        onClick={() => toast("We'll let you know when this integration is ready!", { icon: '🔔' })}
+                      >
+                        Notify me
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </section>
             </div>
           )}
 

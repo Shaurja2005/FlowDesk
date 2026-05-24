@@ -19,17 +19,24 @@ const LoginPage = () => {
   const from = location.state?.from?.pathname || '/';
   const [showPass, setShowPass] = useState(false);
 
+  const [unverifiedEmail, setUnverifiedEmail] = useState(null);
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data) => {
     try {
+      setUnverifiedEmail(null);
       await login(data);
       toast.success('Welcome back!');
       navigate(from, { replace: true });
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      if (err.response?.data?.code === 'EMAIL_NOT_VERIFIED') {
+        setUnverifiedEmail(data.email);
+      } else {
+        toast.error(err.response?.data?.message || 'Login failed');
+      }
     }
   };
 
@@ -56,6 +63,19 @@ const LoginPage = () => {
         {/* Card */}
         <div className="glass-card p-8 shadow-glass">
           <h1 className="text-2xl font-bold text-white mb-6">Sign in to your account</h1>
+
+          {unverifiedEmail && (
+            <div className="mb-6 p-4 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm">
+              <p className="font-medium mb-1">Email not verified</p>
+              <p className="mb-3 text-orange-400/80">Please check your inbox and verify your email address to log in.</p>
+              <button 
+                onClick={() => navigate(`/auth/pending-verification?email=${encodeURIComponent(unverifiedEmail)}`)}
+                className="btn-secondary w-full py-1.5"
+              >
+                Go to Verification Page
+              </button>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
             <div>

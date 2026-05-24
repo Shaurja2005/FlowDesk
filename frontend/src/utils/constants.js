@@ -41,8 +41,12 @@ export const getStatusClass = (status) => {
     'in-review': 'status-in-review',
     done: 'status-done',
     blocked: 'status-blocked',
+    planning: 'status-planning',
+    active: 'status-active',
+    'on-hold': 'status-on-hold',
+    completed: 'status-completed',
   };
-  return map[status] || 'badge bg-gray-500/20 text-gray-300';
+  return map[status] || 'badge bg-gray-500/20 text-gray-700 dark:text-gray-300';
 };
 
 export const getPriorityClass = (priority) => {

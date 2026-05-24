@@ -10,6 +10,8 @@ import MainLayout from './layouts/MainLayout';
 // Pages
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import PendingVerificationPage from './pages/PendingVerificationPage';
 import DashboardPage from './pages/DashboardPage';
 import ProjectsListPage from './pages/ProjectsListPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
@@ -19,6 +21,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import ActivityPage from './pages/ActivityPage';
 import TeamPage from './pages/TeamPage';
 import SettingsPage from './pages/SettingsPage';
+import PricingPage from './pages/PricingPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -46,6 +49,8 @@ function App() {
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
+              <Route path="/auth/pending-verification" element={<PendingVerificationPage />} />
 
               {/* Protected routes — inside MainLayout */}
               <Route
@@ -62,12 +67,13 @@ function App() {
                 <Route path="tasks/:id" element={<TaskDetailPage />} />
                 <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="settings" element={<SettingsPage />} />
+                <Route path="pricing" element={<PricingPage />} />
 
-                {/* Manager + Admin only */}
+                {/* Activity visible to everyone */}
                 <Route
                   path="activity"
                   element={
-                    <RoleRoute allowedRoles={['admin', 'manager']}>
+                    <RoleRoute allowedRoles={['admin', 'manager', 'developer']}>
                       <ActivityPage />
                     </RoleRoute>
                   }

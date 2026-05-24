@@ -37,7 +37,7 @@ const ProjectCard = ({ project }) => (
     <div className="p-5 flex-1 flex flex-col">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="font-semibold text-white group-hover:text-primary-300 transition-colors line-clamp-2">
+        <h3 className="font-semibold text-primary-content group-hover:text-primary-500 transition-colors line-clamp-2">
           {project.title}
         </h3>
         <PriorityBadge priority={project.priority} />

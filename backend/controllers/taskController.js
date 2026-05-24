@@ -59,11 +59,33 @@ const getTasks = asyncHandler(async (req, res) => {
   return successResponse(res, result.data, 'Tasks fetched', 200, result.pagination);
 });
 
+// ─── Search Tasks ─────────────────────────────────────────────────────────────
+const searchTasks = asyncHandler(async (req, res) => {
+  const { q, projectId } = req.query;
+  const query = {};
+  
+  if (q) {
+    query.title = { $regex: q, $options: 'i' };
+  }
+  
+  if (projectId) {
+    query.project = projectId;
+  }
+
+  const tasks = await Task.find(query)
+    .select('title _id workType status priority')
+    .limit(20)
+    .lean();
+    
+  return successResponse(res, tasks, 'Tasks found');
+});
+
 // ─── Create Task ──────────────────────────────────────────────────────────────
 const createTask = asyncHandler(async (req, res) => {
   const {
     title, description, project: projectId, assignedTo,
     status, priority, dueDate, estimatedHours, labels, parentTask,
+    workType, team, flagged, linkedItems, restrictTo, startDate
   } = req.body;
 
   const project = await checkProjectAccess(projectId, req.user._id, req.user.role);
@@ -78,8 +100,9 @@ const createTask = asyncHandler(async (req, res) => {
 
   const task = await Task.create({
     title, description, project: projectId, assignedTo,
-    createdBy: req.user._id, status, priority, dueDate,
+    createdBy: req.user._id, reporter: req.body.reporter || req.user._id, status, priority, dueDate,
     estimatedHours, labels, parentTask, order,
+    workType, team, flagged, linkedItems, restrictTo, startDate
   });
 
   await task.populate([
@@ -122,7 +145,7 @@ const getTaskById = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id)
     .populate('assignedTo', 'name email avatar')
     .populate('createdBy', 'name email avatar')
-    .populate('project', 'title status')
+    .populate('project', 'title status linkedRepo')
     .populate('comments.user', 'name avatar')
     .populate({
       path: 'subtasks',
@@ -302,8 +325,45 @@ const logTime = asyncHandler(async (req, res) => {
   return successResponse(res, { loggedHours: task.loggedHours }, 'Time logged');
 });
 
+// ─── Upload Attachment ────────────────────────────────────────────────────────
+const uploadTaskAttachment = asyncHandler(async (req, res) => {
+  if (!req.file) return errorResponse(res, 'No file uploaded', 400);
+
+  const task = await Task.findById(req.params.id);
+  if (!task) return errorResponse(res, 'Task not found', 404);
+
+  const attachment = {
+    filename: req.file.filename,
+    originalName: req.file.originalname,
+    mimetype: req.file.mimetype,
+    size: req.file.size,
+    url: `/uploads/${req.file.filename}`,
+    uploadedBy: req.user._id,
+    uploadedAt: Date.now(),
+  };
+
+  task.attachments.push(attachment);
+  await task.save();
+  await task.populate('attachments.uploadedBy', 'name avatar profile');
+
+  const newAttachment = task.attachments[task.attachments.length - 1];
+
+  await logActivity({
+    userId: req.user._id,
+    action: ACTIVITY_ACTIONS.UPDATED,
+    entity: 'task',
+    entityId: task._id,
+    entityTitle: task.title,
+    projectId: task.project,
+    meta: { action: 'uploaded attachment', filename: attachment.originalName },
+  });
+
+  return successResponse(res, newAttachment, 'Attachment uploaded', 201);
+});
+
 module.exports = {
   getTasks,
+  searchTasks,
   createTask,
   getTaskById,
   updateTask,
@@ -311,4 +371,5 @@ module.exports = {
   addComment,
   deleteComment,
   logTime,
+  uploadTaskAttachment,
 };

@@ -13,7 +13,7 @@ const navItems = [
   { to: '/projects', icon: FolderKanban, label: 'Projects', roles: ['admin', 'manager', 'developer'] },
   { to: '/tasks', icon: CheckSquare, label: 'My Tasks', roles: ['admin', 'manager', 'developer'] },
   { to: '/notifications', icon: Bell, label: 'Notifications', roles: ['admin', 'manager', 'developer'], badge: true },
-  { to: '/activity', icon: Activity, label: 'Activity', roles: ['admin', 'manager'] },
+  { to: '/activity', icon: Activity, label: 'Activity', roles: ['admin', 'manager', 'developer'] },
   { to: '/team', icon: Users, label: 'Team', roles: ['admin'] },
   { to: '/settings', icon: Settings, label: 'Settings', roles: ['admin', 'manager', 'developer'] },
 ];
@@ -62,6 +62,22 @@ const Sidebar = ({ collapsed, onToggle }) => {
           </NavLink>
         ))}
       </nav>
+
+      {/* Footer links */}
+      <div className="p-3 border-t border-theme">
+        <NavLink
+          to="/pricing"
+          className={({ isActive }) =>
+            `nav-link ${isActive ? 'active' : ''} ${collapsed ? 'justify-center px-2' : ''}`
+          }
+          title={collapsed ? 'Pricing' : ''}
+        >
+          <div className="relative flex-shrink-0">
+            <Zap size={18} />
+          </div>
+          {!collapsed && <span>Pricing</span>}
+        </NavLink>
+      </div>
 
       {/* User info */}
       {!collapsed && (

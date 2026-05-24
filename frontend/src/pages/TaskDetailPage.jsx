@@ -10,6 +10,7 @@ import { StatusBadge, PriorityBadge } from '../components/Badges';
 import Avatar from '../components/Avatar';
 import { Spinner, EmptyState } from '../components/Spinner';
 import { ConfirmDialog } from '../components/Modal';
+import TaskDevSidebar from '../components/TaskDevSidebar';
 import { formatDate, formatRelative, isOverdue } from '../utils/formatDate';
 import { TASK_STATUSES, PRIORITIES } from '../utils/constants';
 import toast from 'react-hot-toast';
@@ -319,6 +320,11 @@ const TaskDetailPage = () => {
                 </Link>
               )}
             </div>
+
+            <div className="divider" />
+
+            {/* Development Sidebar Section */}
+            <TaskDevSidebar project={task.project} task={task} />
 
             <div className="divider" />
 

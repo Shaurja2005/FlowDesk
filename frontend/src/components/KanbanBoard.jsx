@@ -29,7 +29,7 @@ const TaskCard = ({ task, index }) => (
             <GripVertical size={14} />
           </div>
           <Link to={`/tasks/${task._id}`} className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-200 group-hover:text-white line-clamp-2 mb-2">
+            <p className="text-sm font-medium text-primary-content group-hover:text-primary-500 line-clamp-2 mb-2">
               {task.title}
             </p>
           </Link>
@@ -39,7 +39,7 @@ const TaskCard = ({ task, index }) => (
         {task.labels?.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-2 pl-5">
             {task.labels.slice(0, 3).map((label) => (
-              <span key={label} className="text-xs px-1.5 py-0.5 rounded bg-primary-500/15 text-primary-400 border border-primary-500/20">
+              <span key={label} className="text-xs px-1.5 py-0.5 rounded bg-primary-500/15 text-primary-700 dark:text-primary-400 border border-primary-500/20">
                 {label}
               </span>
             ))}

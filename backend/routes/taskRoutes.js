@@ -4,14 +4,16 @@ const { body } = require('express-validator');
 const {
   getTasks, createTask, getTaskById,
   updateTask, deleteTask, addComment,
-  deleteComment, logTime,
+  deleteComment, logTime, searchTasks, uploadTaskAttachment,
 } = require('../controllers/taskController');
+const upload = require('../middlewares/upload');
 const { protect } = require('../middlewares/auth');
 const validate = require('../middlewares/validate');
 
 router.use(protect);
 
 router.get('/', getTasks);
+router.get('/search', searchTasks);
 
 router.post(
   '/',
@@ -54,5 +56,7 @@ router.put(
   validate,
   logTime
 );
+
+router.post('/:id/attachments', upload.single('file'), uploadTaskAttachment);
 
 module.exports = router;

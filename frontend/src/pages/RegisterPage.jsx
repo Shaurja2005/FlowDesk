@@ -27,8 +27,7 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     try {
       await registerUser(data);
-      toast.success('Account created!');
-      navigate('/');
+      navigate(`/auth/pending-verification?email=${encodeURIComponent(data.email)}`);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
     }

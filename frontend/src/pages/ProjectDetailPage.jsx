@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Kanban, List, Users, Activity, Plus, ArrowLeft, Settings } from 'lucide-react';
+import { Kanban, List, Users, Activity, Plus, ArrowLeft, Settings, Code } from 'lucide-react';
 import { projectsApi } from '../api/projectsApi';
 import { useAuth } from '../context/AuthContext';
 import { StatusBadge, PriorityBadge } from '../components/Badges';
@@ -10,11 +10,15 @@ import KanbanBoard from '../components/KanbanBoard';
 import TaskListView from '../components/TaskListView';
 import ProjectMembersTab from '../components/ProjectMembersTab';
 import ProjectActivityTab from '../components/ProjectActivityTab';
-import CreateTaskModal from '../components/CreateTaskModal';
+import CreateTaskDrawer from '../components/CreateTaskDrawer';
+import ConnectRepoEmptyState from '../components/DevTab/ConnectRepoEmptyState';
+import LinkRepoModal from '../components/DevTab/LinkRepoModal';
+import ProjectDevTab from '../components/DevTab/ProjectDevTab';
+import CodeSection from '../components/CodeSection';
 import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
 
-const TABS = ['Board', 'List', 'Members', 'Activity'];
+const TABS = ['Board', 'List', 'Code', 'Members', 'Activity', 'Development'];
 
 const ProjectDetailPage = () => {
   const { id } = useParams();
@@ -23,6 +27,7 @@ const ProjectDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Board');
   const [showCreateTask, setShowCreateTask] = useState(false);
+  const [showLinkModal, setShowLinkModal] = useState(false);
   const [taskRefreshKey, setTaskRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -44,7 +49,23 @@ const ProjectDetailPage = () => {
     setShowCreateTask(false);
   };
 
-  const canManage = ['admin', 'manager'].includes(user?.role);
+  const handleLinkRepo = async (repoData) => {
+    const res = await projectsApi.update(project._id, { linkedRepo: repoData });
+    setProject(res.data.data);
+  };
+
+  const handleUnlinkRepo = async () => {
+    try {
+      const res = await projectsApi.update(project._id, { linkedRepo: { fullName: null, owner: null, name: null } });
+      setProject(res.data.data);
+      toast.success('Repository unlinked');
+    } catch (err) {
+      toast.error('Failed to unlink repository');
+    }
+  };
+
+  const canManage = ['admin', 'manager'].includes(user?.role?.toLowerCase());
+  const canCreateTask = true; // Anyone with project access can create tasks
   const members = project?.members?.map((m) => m.user).filter(Boolean) || [];
 
   if (isLoading) {
@@ -91,7 +112,7 @@ const ProjectDetailPage = () => {
               <p className="text-xs text-gray-500">Progress</p>
               <p className="text-lg font-bold text-white">{project.progress || 0}%</p>
             </div>
-            {canManage && (
+            {canCreateTask && (
               <button
                 onClick={() => setShowCreateTask(true)}
                 className="btn-primary flex items-center gap-2"
@@ -128,6 +149,8 @@ const ProjectDetailPage = () => {
             {tab === 'List' && <List size={14} />}
             {tab === 'Members' && <Users size={14} />}
             {tab === 'Activity' && <Activity size={14} />}
+            {tab === 'Code' && <Code size={14} />}
+            {tab === 'Development' && <Code size={14} />}
             {tab}
           </button>
         ))}
@@ -137,19 +160,34 @@ const ProjectDetailPage = () => {
       <div>
         {activeTab === 'Board' && <KanbanBoard projectId={id} refreshKey={taskRefreshKey} canManage={canManage} />}
         {activeTab === 'List' && <TaskListView projectId={id} refreshKey={taskRefreshKey} canManage={canManage} />}
+        {activeTab === 'Code' && <CodeSection projectId={id} linkedRepo={project.linkedRepo} />}
         {activeTab === 'Members' && <ProjectMembersTab project={project} onUpdate={setProject} canManage={canManage} />}
         {activeTab === 'Activity' && <ProjectActivityTab projectId={id} />}
+        {activeTab === 'Development' && (
+          project.linkedRepo?.fullName ? (
+            <ProjectDevTab project={project} onUnlink={handleUnlinkRepo} />
+          ) : (
+            <ConnectRepoEmptyState onConnectClick={() => setShowLinkModal(true)} />
+          )
+        )}
       </div>
 
-      {/* Create Task Modal */}
+      {/* Create Task Drawer */}
       {showCreateTask && (
-        <CreateTaskModal
-          projectId={id}
+        <CreateTaskDrawer
+          isOpen={showCreateTask}
+          project={project}
           onClose={() => setShowCreateTask(false)}
           onSuccess={onTaskCreated}
-          members={members}
         />
       )}
+
+      {/* Link Repo Modal */}
+      <LinkRepoModal 
+        isOpen={showLinkModal} 
+        onClose={() => setShowLinkModal(false)} 
+        onLink={handleLinkRepo} 
+      />
     </div>
   );
 };

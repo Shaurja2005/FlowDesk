@@ -66,9 +66,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = useCallback(async (userData) => {
     const { data } = await authApi.register(userData);
-    localStorage.setItem('accessToken', data.data.accessToken);
-    dispatch({ type: 'AUTH_SUCCESS', payload: data.data });
-    return data.data;
+    return data;
   }, []);
 
   const logout = useCallback(async () => {

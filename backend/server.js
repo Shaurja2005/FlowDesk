@@ -5,9 +5,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
 
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
+const { globalLimiter } = require('./middlewares/rateLimiter');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -17,6 +20,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const githubRoutes = require('./routes/githubRoutes');
 
 // Connect to MongoDB
 connectDB();
@@ -26,7 +30,7 @@ const app = express();
 // ─── Security & Parsing ───────────────────────────────────────────────────────
 app.use(
   helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' }, // allow static file serving
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 app.use(
@@ -35,8 +39,17 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ─── Global Rate Limiter (all routes) ─────────────────────────────────────────
+app.use(globalLimiter);
+
+// ─── Input Sanitisation ───────────────────────────────────────────────────────
+app.use(mongoSanitize()); // blocks NoSQL injection via $ and . in req.body
+app.use(hpp());           // prevents HTTP parameter pollution
+
+// ─── Body Parsers (tightened limits) ─────────────────────────────────────────
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
@@ -55,6 +68,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/integrations/github', githubRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

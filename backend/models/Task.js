@@ -17,6 +17,7 @@ const attachmentSchema = new mongoose.Schema(
     size: Number,
     url: String,
     uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    uploadedAt: { type: Date, default: Date.now }
   },
   { timestamps: true }
 );
@@ -49,6 +50,16 @@ const taskSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    reporter: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
+    },
+    workType: {
+      type: String,
+      enum: ['task', 'bug', 'story', 'epic', 'subtask'],
+      default: 'task'
+    },
     status: {
       type: String,
       enum: Object.values(TASK_STATUS),
@@ -60,6 +71,7 @@ const taskSchema = new mongoose.Schema(
       default: PRIORITY.MEDIUM,
     },
     dueDate: { type: Date, default: null },
+    startDate: { type: Date, default: null },
     estimatedHours: { type: Number, default: 0, min: 0 },
     loggedHours: { type: Number, default: 0, min: 0 },
     labels: [{ type: String, trim: true }],
@@ -71,6 +83,18 @@ const taskSchema = new mongoose.Schema(
       ref: 'Task',
       default: null,
     },
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Task',
+      default: null,
+    },
+    team: { type: String, default: '' },
+    flagged: { type: Boolean, default: false },
+    linkedItems: [{
+      type: { type: String, enum: ['blocks', 'is-blocked-by', 'relates-to', 'duplicates'] },
+      task: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }
+    }],
+    restrictTo: [{ type: String }],
   },
   {
     timestamps: true,

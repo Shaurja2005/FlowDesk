@@ -167,17 +167,25 @@
   }
 
   /* Status chips */
-  .status-todo        { @apply badge bg-gray-500/20 text-gray-500;  }
-  .status-in-progress { @apply badge bg-blue-500/20 text-blue-500;  }
-  .status-in-review   { @apply badge bg-yellow-500/20 text-yellow-600; }
-  .status-done        { @apply badge bg-green-500/20 text-green-600; }
-  .status-blocked     { @apply badge bg-red-500/20 text-red-500;    }
+  .status-todo        { @apply badge bg-gray-500/20 text-gray-700;  }
+  .status-in-progress { @apply badge bg-blue-500/20 text-blue-700;  }
+  .status-in-review   { @apply badge bg-yellow-500/20 text-yellow-700; }
+  .status-done        { @apply badge bg-green-500/20 text-green-700; }
+  .status-blocked     { @apply badge bg-red-500/20 text-red-700;    }
+  .status-planning    { @apply badge bg-purple-500/20 text-purple-700; }
+  .status-active      { @apply badge bg-blue-500/20 text-blue-700; }
+  .status-on-hold     { @apply badge bg-orange-500/20 text-orange-700; }
+  .status-completed   { @apply badge bg-green-500/20 text-green-700; }
 
   .dark .status-todo        { @apply text-gray-300; }
   .dark .status-in-progress { @apply text-blue-300; }
   .dark .status-in-review   { @apply text-yellow-300; }
   .dark .status-done        { @apply text-green-300; }
   .dark .status-blocked     { @apply text-red-300; }
+  .dark .status-planning    { @apply text-purple-300; }
+  .dark .status-active      { @apply text-blue-300; }
+  .dark .status-on-hold     { @apply text-orange-300; }
+  .dark .status-completed   { @apply text-green-300; }
 
   /* Priority chips */
   .priority-low      { @apply badge bg-slate-500/20 text-slate-600; }

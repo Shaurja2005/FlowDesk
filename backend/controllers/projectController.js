@@ -139,7 +139,7 @@ const updateProject = asyncHandler(async (req, res) => {
     return errorResponse(res, 'Only the project owner can update it', 403);
   }
 
-  const allowed = ['title', 'description', 'status', 'priority', 'startDate', 'endDate', 'tags', 'coverColor'];
+  const allowed = ['title', 'description', 'status', 'priority', 'startDate', 'endDate', 'tags', 'coverColor', 'linkedRepo'];
   allowed.forEach((field) => {
     if (req.body[field] !== undefined) project[field] = req.body[field];
   });

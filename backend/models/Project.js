@@ -45,6 +45,11 @@ const projectSchema = new mongoose.Schema(
       type: String,
       default: '#6C63FF',
     },
+    linkedRepo: {
+      fullName: { type: String, default: null },
+      owner:    { type: String, default: null },
+      name:     { type: String, default: null },
+    },
   },
   {
     timestamps: true,

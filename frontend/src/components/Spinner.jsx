@@ -21,8 +21,8 @@ export const EmptyState = ({ icon: Icon, title, message, action }) => (
         <Icon size={32} className="text-primary-400" />
       </div>
     )}
-    <h3 className="text-lg font-semibold text-gray-200 mb-2">{title}</h3>
-    {message && <p className="text-gray-500 text-sm max-w-sm mb-6">{message}</p>}
+    <h3 className="text-lg font-semibold text-primary-content mb-2">{title}</h3>
+    {message && <p className="text-secondary-content text-sm max-w-sm mb-6">{message}</p>}
     {action}
   </div>
 );
