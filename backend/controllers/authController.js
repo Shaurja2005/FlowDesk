@@ -26,6 +26,17 @@ const register = asyncHandler(async (req, res) => {
     return errorResponse(res, 'Failed to initiate email verification', 500);
   }
 
+  // Actually trigger the email to be sent since admin.createUser doesn't send it automatically
+  const { error: sendError } = await supabaseAdmin.auth.resend({
+    type: 'signup',
+    email,
+  });
+
+  if (sendError) {
+    console.error('Supabase send email error:', sendError);
+    // Continue anyway so the user exists, they can use 'resend' later
+  }
+
   // Create unverified MongoDB user
   const user = await User.create({
     name,
@@ -253,7 +264,7 @@ const resendVerification = asyncHandler(async (req, res) => {
     return errorResponse(res, 'Email is already verified', 400);
   }
 
-  const { data, error } = await supabaseAdmin.auth.admin.generateLink({
+  const { error } = await supabaseAdmin.auth.resend({
     type: 'signup',
     email: user.email,
   });
