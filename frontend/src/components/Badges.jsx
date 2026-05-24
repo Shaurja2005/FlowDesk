@@ -1,4 +1,4 @@
-import { getStatusClass, getPriorityClass } from '../../utils/constants';
+import { getStatusClass, getPriorityClass } from '../utils/constants';
 
 export const StatusBadge = ({ status }) => {
   const label = {

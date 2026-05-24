@@ -1,4 +1,4 @@
-import { getInitials } from '../../utils/constants';
+import { getInitials } from '../utils/constants';
 
 const COLORS = [
   'bg-primary-500', 'bg-accent-cyan', 'bg-pink-500',
